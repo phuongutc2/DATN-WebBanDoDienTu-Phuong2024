@@ -1,0 +1,119 @@
+{
+  "version": 3,
+  "targets": {
+    "net8.0": {
+      "System.Xml.Linq/3.5.21022.801": {
+        "type": "package",
+        "compile": {
+          "lib/net20/System.Xml.Linq.dll": {}
+        },
+        "runtime": {
+          "lib/net20/System.Xml.Linq.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "System.Xml.Linq/3.5.21022.801": {
+      "sha512": "U6hdQ1sCnMD/s2zqKl23g4Obdovr1ZUnrF1x+NRpaoZBeZX5PSwcp1dgvgvJaRsYZgwUzrC+tj9klb0mMnHUcQ==",
+      "type": "package",
+      "path": "system.xml.linq/3.5.21022.801",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net20/System.Xml.Linq.dll",
+        "system.xml.linq.3.5.21022.801.nupkg.sha512",
+        "system.xml.linq.nuspec"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net8.0": [
+      "System.Xml.Linq >= 3.5.21022.801"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\PC\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Users\\PC\\source\\repos\\DATNShop\\DATNShop\\DATNShop.csproj",
+      "projectName": "DATNShop",
+      "projectPath": "C:\\Users\\PC\\source\\repos\\DATNShop\\DATNShop\\DATNShop.csproj",
+      "packagesPath": "C:\\Users\\PC\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\PC\\source\\repos\\DATNShop\\DATNShop\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\PC\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net8.0"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "projectReferences": {}
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      }
+    },
+    "frameworks": {
+      "net8.0": {
+        "targetAlias": "net8.0",
+        "dependencies": {
+          "System.Xml.Linq": {
+            "target": "Package",
+            "version": "[3.5.21022.801, )"
+          }
+        },
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.AspNetCore.App": {
+            "privateAssets": "none"
+          },
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+      }
+    }
+  },
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'System.Xml.Linq 3.5.21022.801' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net8.0'. This package may not be fully compatible with your project.",
+      "libraryId": "System.Xml.Linq",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    }
+  ]
+}
