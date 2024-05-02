@@ -28,3 +28,4 @@ C:\Users\PC\source\repos\DATNShop\DATNShop\obj\Debug\net8.0\refint\DATNShop.dll
 C:\Users\PC\source\repos\DATNShop\DATNShop\obj\Debug\net8.0\DATNShop.pdb
 C:\Users\PC\source\repos\DATNShop\DATNShop\obj\Debug\net8.0\DATNShop.genruntimeconfig.cache
 C:\Users\PC\source\repos\DATNShop\DATNShop\obj\Debug\net8.0\ref\DATNShop.dll
+C:\Users\PC\source\repos\DATNShop\DATNShop\obj\Debug\net8.0\DATNShop.sourcelink.json
