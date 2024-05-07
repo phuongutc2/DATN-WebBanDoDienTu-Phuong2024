@@ -1,0 +1,210 @@
+﻿@using ShoppingOnline.Models.Entities;
+@{
+    ViewBag.Title = "Hình ảnh sản phẩm";
+    Layout = "~/Areas/Seller/Views/Shared/_Layout.cshtml";
+    var lstImage = ViewBag.lstImage as List<Image>;
+    var product = ViewBag.Product as Product;
+}
+
+
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4">
+                <h3 class="page-header">Hình ảnh sản phẩm(@lstImage.Count hình ảnh)</h3>
+            </div>
+            <div class="col-md-8" style="margin-top: 40px;">
+                <ol class="breadcrumb" style="text-align: right">
+                    <li><a href="#"><i class="fa fa-table fa-fw"></i>Quản lý sản phẩm</a></li>
+                    <li class="active">Hình ảnh sản phẩm</li>
+                </ol>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <div class="row">
+            @if (TempData["add_success"] != null)
+            {
+                <div class="alert alert-success text-center" id="AlertBox">
+                    @TempData["add_success"]
+                </div>
+            }
+        </div>
+        <div class="row">
+            <div class="col-md-4" style="margin-bottom: 10px">
+                <button class="btn btn-lg btn-primary" data-toggle="modal" data-target="#add">Thêm mới hình ảnh</button>
+            </div>
+        </div>
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <p style="font-size:24px">
+                            <img src="~/Assets/images/product/@product.Image" width="150px"/>
+                            @product.Product_Name
+                        </p>
+                        
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <tbody>
+                                    @if (lstImage.Count > 0)
+                                    {
+                                        <tr class="text-center">
+                                            @foreach (var item in lstImage)
+                                            {
+                                                <td><img src="~/Assets/images/product-detail/@item.Image1" alt="" width="200px" /></td>
+                                            }
+                                        </tr>
+                                        <tr class="text-center">
+                                            @foreach (var item in lstImage)
+                                            {
+                                                <td><button class="btn btn-danger btnDelete" data-id="@item.ID"><i class="fa fa-remove"></i>Xóa</button></td>
+                                            }
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr class="text-center">
+                                            <td><i>Chưa có hình ảnh chi tiết cho sản phẩm, bạn vui lòng thêm mới</i></td>
+                                        </tr>
+                                        
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+
+        </div>
+
+    </div>
+    <!-- /.container-fluid -->
+</div>
+
+<div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center text-uppercase" id="exampleModalLabel">Thêm Hình ảnh chi tiết sản phẩm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("Upload_Mutil_Image", "Product", FormMethod.Post, new { enctype = "multipart/form-data", id="frmAdd" }))
+                {
+                    <input type="hidden" name="Product_ID" value="@product.ID"/>
+                    <label for="">Ảnh đại diện</label>
+                    <div class="form-group">
+                        <label for="file-upload" class="custom-file-upload">
+                            <i class="fa fa-cloud-upload"></i> Chọn 1 hoặc nhiều hình ảnh
+                        </label>
+                        <input id="file-upload" name="images" type="file" multiple style="display:none;" accept="image/*">
+                    </div>
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn btn-primary">Thêm mới</button>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section jsSeller{
+
+    <script type="text/javascript">
+        $(function () {
+            //nếu không có thao tác gì thì ẩn đi
+            $('#AlertBox').removeClass('hide');
+
+            //Sau khi hiển thị lên thì delay 1s và cuộn lên trên sử dụng slideup
+            $('#AlertBox').delay(2000).slideUp(500);
+
+
+            $('.btnDelete').off('click').on('click', function () {
+                 const notice = PNotify.notice({
+                    title: 'Thông báo',
+                    text: 'Bạn thật sự muốn xóa?',
+                    icon: 'fa fa-question-circle',
+                    width: '360px',
+                    minHeight: '110px',
+                    hide: false,
+                    closer: false,
+                    sticker: false,
+                    destroy: true,
+                    stack: new PNotify.Stack({
+                        dir1: 'down',
+                        modal: true,
+                        firstpos1: 25,
+                        overlayClose: false
+                    }),
+                    modules: new Map([
+                        ...PNotify.defaultModules,
+                        [PNotifyConfirm, {
+                            confirm: true
+                        }]
+                    ])
+                });
+
+                notice.on('pnotify:confirm', () =>
+                    $.ajax({
+                        data: { ID: $(this).data('id') },
+                        url: '/Seller/Product/Del_Images',
+                        dataType: 'Json',
+                        type: 'POST',
+                        success: function (res) {
+                            if (res.status == true) {
+                                window.location.href = "/Seller/Product/Images/" + @product.ID;
+                                PNotify.success({
+                                    title: 'THÔNG BÁO!!',
+                                    text: 'Xóa sản phẩm thành công.'
+                                });
+                            } else {
+                                PNotify.error({
+                                    title: 'THÔNG BÁO!!',
+                                    text: 'Xóa ảnh KHÔNG thành công. Bạn vui lòng thử lại sau.'
+                                });
+                            }
+                        }
+                    })
+                );
+            });
+
+            $('#file-upload').change(function () {
+                var input = document.getElementById('file-upload');
+                var file = '<i class="bi bi-cloud-arrow-up-fill"></i>' + 'Bạn đã chọn <b>' + input.files.length + '</b> hình ảnh. ';
+                $(this).prev('label').empty();
+                $(this).prev('label').append(file);
+                for (var i = 0; i <= input.files.length; ++i) {
+                    var file = '<p style="font-weight: bold">' + input.files.item(i).name + '</p>';
+                    $('.custom-file-upload').append(file);
+                }
+            });
+
+             $("#frmAdd").validate({
+                rules: {
+                    images: "required"
+                },
+                messages: {
+                    images: "Vui lòng chọn hình ảnh"
+                }
+            });
+
+        });
+    </script>
+
+}
+
+
+

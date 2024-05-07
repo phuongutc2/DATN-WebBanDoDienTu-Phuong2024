@@ -1,0 +1,204 @@
+﻿@model PagedList.IPagedList<ShoppingOnline.Models.DTO.ProductDTO>
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Quản lý sản phẩm";
+    Layout = "~/Areas/Seller/Views/Shared/_Layout.cshtml";
+    int dem = 1;
+}
+
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4">
+                <h3 class="page-header">Sản phẩm laptop</h3>
+            </div>
+            <div class="col-md-8" style="margin-top: 40px;">
+                <ol class="breadcrumb" style="text-align: right">
+                    <li><a href="#"><i class="fa fa-address-book-o fa-fw"></i>Quản lý sản phẩm</a></li>
+                    <li class="active">Sản phẩm laptop</li>
+                </ol>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <div class="row">
+            @if (TempData["add_success"] != null)
+            {
+                <div class="alert alert-success text-center" id="AlertBox">
+                    @TempData["add_success"]
+                </div>
+            }
+        </div>
+        <div class="row">
+            <div class="col-md-4" style="margin-bottom: 10px">
+                <a href="/Seller/Product/Add" class="btn btn-lg btn-primary">Thêm mới sản phẩm</a>
+            </div>
+        </div>
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Sản phẩm đang đăng bán
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="tblData">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th class="text-center" colspan="2" width="50%">Thông tin sản phẩm</th>
+                                        <th class="text-center">Giá bán (đ)</th>
+                                        <th class="text-center">Trạng thái</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@dem</td>
+                                            <td>
+                                                <img src="~/Assets/images/product/@item.Image" alt="" width="110px" />
+                                            </td>
+                                            <td>
+                                                <span><b>@item.Product_Name</b></span>
+                                                <p>Hãng sản xuất: <b>@item.Category_Name</b></p>
+                                            </td>
+                                            <td>
+                                                <p>Giá gốc: <b>@item.Promotion_Price.Value.ToString("N0")  </b></p>
+                                                <p>Giá Km: <b>@(item.Price != null ? item.Price.Value.ToString("N0") : "")</b></p>
+                                            </td>
+                                            <td>
+                                                @if (item.Status == true)
+                                                {
+                                                    <button class="btn btn-primary btnStatus" data-id="@item.ID" title="Kích hoạt tạm dừng bán">Đang bán</button>
+                                                }
+                                                else if (item.Status == false)
+                                                {
+                                                    <button class="btn btn-warning btnStatus" data-id="@item.ID" title="Kích hoạt đang bán">Tạm dừng bán</button>
+                                                }
+                                            </td>
+                                            <td>
+                                                <a href="/Seller/Product/Images/@item.ID" class="btn btn-primary" title="Hình ảnh chi tiết hình ảnh"><i class="fa fa-picture-o"></i></a>
+                                                <a href="/Seller/Product/Edit/@item.ID" class="btn btn-default" title="Cập nhật sản phẩm"><i class="fa fa-edit"></i></a>
+                                                <button class="btn btn-danger btnDelete" data-id="@item.ID" title="Xóa sản phẩm"><i class="fa fa-remove"></i></button>
+                                            </td>
+                                        </tr>
+                                        dem++;
+                                    }
+
+
+                                </tbody>
+                            </table>
+                            Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+                            
+                        </div>
+                        <div class="panel-footer text-center">
+                            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize }))
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+
+        </div>
+
+    </div>
+    <!-- /.container-fluid -->
+</div>
+
+
+@section jsSeller{
+    
+    <script type="text/javascript">
+        $(function () {
+
+            $('#tblData').DataTable();
+            //nếu không có thao tác gì thì ẩn đi
+            $('#AlertBox').removeClass('hide');
+
+            //Sau khi hiển thị lên thì delay 1s và cuộn lên trên sử dụng slideup
+            $('#AlertBox').delay(2000).slideUp(500);
+
+
+            $('.btnDelete').off('click').on('click', function () {
+                const notice = PNotify.notice({
+                    title: 'Thông báo',
+                    text: 'Bạn thật sự muốn xóa?',
+                    icon: 'fa fa-question-circle',
+                    width: '360px',
+                    minHeight: '110px',
+                    hide: false,
+                    closer: false,
+                    sticker: false,
+                    destroy: true,
+                    stack: new PNotify.Stack({
+                        dir1: 'down',
+                        modal: true,
+                        firstpos1: 25,
+                        overlayClose: false
+                    }),
+                    modules: new Map([
+                        ...PNotify.defaultModules,
+                        [PNotifyConfirm, {
+                            confirm: true
+                        }]
+                    ])
+                });
+
+                notice.on('pnotify:confirm', () =>
+                    $.ajax({
+                        data: { ID: $(this).data('id') },
+                        url: '/Seller/Product/Delete',
+                        dataType: 'Json',
+                        type: 'POST',
+                        success: function (res) {
+                            if (res.status == true) {
+                                
+                                window.location.href = "/Seller/Product/Index";
+                                PNotify.success({
+                                    title: 'THÔNG BÁO!!',
+                                    text: 'Xóa sản phẩm thành công.'
+                                });
+                            } else {
+                                
+                                window.location.href = "/Seller/Product/Index";
+                                PNotify.error({
+                                    title: 'THÔNG BÁO!!',
+                                    text: 'Xóa sản phẩm KHÔNG thành công. Bạn vui lòng xóa chi tiết sản phẩm trước.'
+                                });
+                            }
+                        }
+                    })
+
+                );
+
+
+            });
+
+            $('.btnStatus').off('click').on('click', function () {
+                $.ajax({
+                    data: { ID: $(this).data('id') },
+                    url: '/Seller/Product/changeStatus',
+                    dataType: 'Json',
+                    type: 'POST',
+                    success: function (res) {
+                        if (res.status == true) {
+                            window.location.href = "/Seller/Product";
+                            PNotify.success({
+                                title: 'THÔNG BÁO!!',
+                                text: 'Cập nhật trạng thái thành công.'
+                            });
+                        }
+                    }
+                });
+
+            });
+        });
+    </script>
+
+}
+

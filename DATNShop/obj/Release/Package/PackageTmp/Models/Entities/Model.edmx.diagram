@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="f59eb508bce443949e0398a8a765aff6" Name="Diagram1">
+        <EntityTypeShape EntityType="Shopping_OnlineModel.Category" Width="1.5" PointX="0.75" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="Shopping_OnlineModel.Order" Width="1.5" PointX="3" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Shopping_OnlineModel.Order_Detail" Width="1.5" PointX="5.25" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Shopping_OnlineModel.Product" Width="1.5" PointX="3" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Shopping_OnlineModel.Review" Width="1.5" PointX="5.25" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Shopping_OnlineModel.Role" Width="1.5" PointX="7.75" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Shopping_OnlineModel.sysdiagram" Width="1.5" PointX="7.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Shopping_OnlineModel.User" Width="1.5" PointX="10" PointY="1" IsExpanded="true" />
+        <AssociationConnector Association="Shopping_OnlineModel.FK_Product_Category" ManuallyRouted="false" />
+        <AssociationConnector Association="Shopping_OnlineModel.FK_Order_Detail_Order" ManuallyRouted="false" />
+        <AssociationConnector Association="Shopping_OnlineModel.FK_Order_Detail_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="Shopping_OnlineModel.FK_Review_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="Shopping_OnlineModel.FK_User_Role" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="Shopping_OnlineModel.Image" Width="1.5" PointX="5.25" PointY="0.75" />
+        <AssociationConnector Association="Shopping_OnlineModel.FK_Image_Product" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

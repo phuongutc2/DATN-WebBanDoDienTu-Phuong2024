@@ -1,0 +1,445 @@
+﻿@using ShoppingOnline.Models.Entities;
+@{
+    ViewBag.Title = "Trang chủ";
+    Layout = "~/Views/Shared/_layout.cshtml";
+    var lstProduct = ViewBag.LstProduct as List<Product>;
+    //var lstPhuKienThoiTrang = ViewBag.lstPhuKienThoiTrang as List<Product>;
+    //var lstQuanAoNam = ViewBag.lstQuanAoNam as List<Product>;
+    //var lstQuanApNu = ViewBag.lstQuanApNu as List<Product>;
+    //var lstValiBalo = ViewBag.lstValiBalo as List<Product>;
+    var lstProductRecommend_1 = ViewBag.lstProductRecommend_1 as List<Product>;
+    var lstProductRecommend_2 = ViewBag.lstProductRecommend_2 as List<Product>;
+
+    var lstCategory =  ViewBag.lstCategory as List<Category>;
+    var lstProductAll = ViewBag.lstProductAll as List<Product>;
+    int dem = 0, tab = 0, dem1 = 0, tab1 = 0;
+}
+
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                @{Html.RenderAction("Navigation", "Home");}
+            </div>
+
+            <div class="col-sm-9 padding-right">
+                <div class="features_items">
+                    <!--features_items-->
+                    <h2 class="title text-center">Sản phẩm mới</h2>
+
+                    @foreach (var item in lstProduct.Where(x => x.Status == true))
+                    {
+                        var url = "/san-pham/" + item.Metatitle.Trim().Trim() + "-" + item.ID;
+                        <div class="back-product">
+                            <div class="product-image-wrapper">
+                                <div class="single-products">
+                                    <div class="productinfo text-center">
+                                        <a href="@url">
+                                            <img src="~/Assets/images/product/@item.Image" alt="" />
+                                        </a>
+                                        @if (item.Price != null)
+                                        {
+                                            var discount = (int)((1 - (item.Price / item.Promotion_Price)) * 100);
+                                            <p class="price-sale">
+                                                <span class="final-price">
+                                                    @item.Price.Value.ToString("N0") ₫
+                                                    <span class="sale-tag">-@discount%</span>
+                                                </span>
+                                                <span class="promotion-price">@item.Promotion_Price.Value.ToString("N0") ₫</span>
+                                            </p>
+                                        }
+                                        else
+                                        {
+                                            <p class="price-sale">
+                                                <span class="final-price">
+                                                    @item.Promotion_Price.Value.ToString("N0") ₫
+                                                </span>
+                                            </p>
+                                        }
+
+                                        <a href="@url">
+                                            <p>@(item.Product_Name.Length > 40 ? item.Product_Name.Substring(0, 40) : item.Product_Name)</p>
+                                        </a>
+                                    </div>
+                                    @*<div class="btn-cart">
+                                    <a href="javascript:void(0)" class="btn btn-default add-to-cart btn-addCart" data-id="@item.ID" data-quantity="1">
+                                        <i class="fa fa-shopping-cart"></i>Thêm giỏ hàng
+                                    </a>
+                                </div>*@
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div><!--features_items-->
+            </div>
+
+            <div class="col-sm-12 padding-right">
+
+                <div class="category-tab">
+                    <h2 class="title text-center">Sản phẩm Laptop nổi bật</h2>
+                    <!--category-tab-->
+                    <div class="col-sm-12">
+                        <ul class="nav nav-tabs">
+                            @foreach (var item in lstCategory.Where(x => x.Type == "Laptop"))
+                            {
+                                
+                                if (dem == 0)
+                                {
+                                    <li class="active"><a href="#Category_@item.ID" data-toggle="tab">@item.Name</a></li>
+                                }
+                                else
+                                {
+                                    <li><a href="#Category_@item.ID" data-toggle="tab">@item.Name</a></li>
+                                }
+                                dem++;
+                            }
+                        </ul>
+                    </div>
+                    <div class="tab-content">
+                        @foreach (var jtem in lstCategory.Where(x => x.Type == "Laptop"))
+                        {
+                            
+                            if (tab == 0)
+                            {
+                                <div class="tab-pane fade active in" id="Category_@jtem.ID">
+                                    @foreach (var item in lstProductAll.Where(x => x.Status == true))
+                                    {
+                                        if (item.Category_ID == jtem.ID)
+                                        {
+                                            var url = "/san-pham/" + item.Metatitle.Trim() + "-" + item.ID;
+                                            <div class="col-sm-3">
+                                                <div class="product-image-wrapper"  style="height: 300px;">
+                                                    <div class="single-products">
+                                                        <div class="productinfo text-center">
+                                                            <a href="@url">
+                                                                <img src="~/Assets/images/product/@item.Image" alt="" />
+                                                            </a>
+                                                            @if (item.Price != null)
+                                                            {
+                                                                var discount = (int)((1 - (item.Price / item.Promotion_Price)) * 100);
+                                                                <p class="price-sale">
+                                                                    <span class="final-price">
+                                                                        @item.Price.Value.ToString("N0") ₫
+                                                                        <span class="sale-tag">-@discount%</span>
+                                                                    </span>
+                                                                    <span class="promotion-price">@item.Promotion_Price.Value.ToString("N0") ₫</span>
+                                                                </p>
+                                                            }
+                                                            else
+                                                            {
+                                                                <p class="price-sale">
+                                                                    <span class="final-price">
+                                                                        @item.Promotion_Price.Value.ToString("N0") ₫
+                                                                    </span>
+                                                                </p>
+                                                            }
+
+                                                            <a href="@url">
+                                                                <p>@(item.Product_Name.Length > 40 ? item.Product_Name.Substring(0, 40) : item.Product_Name)</p>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+                                    }
+
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="tab-pane fade" id="Category_@jtem.ID">
+                                    @foreach (var item in lstProductAll.Where(x => x.Status == true))
+                                    {
+                                        if (item.Category_ID == jtem.ID)
+                                        {
+                                            var url = "/san-pham/" + item.Metatitle.Trim() + "-" + item.ID;
+                                            <div class="col-sm-3">
+                                                <div class="product-image-wrapper" style="height: 300px;">
+                                                    <div class="single-products">
+                                                        <div class="productinfo text-center">
+                                                            <a href="@url">
+                                                                <img src="~/Assets/images/product/@item.Image" alt="" />
+                                                            </a>
+                                                            @if (item.Price != null)
+                                                            {
+                                                                var discount = (int)((1 - (item.Price / item.Promotion_Price)) * 100);
+                                                                <p class="price-sale">
+                                                                    <span class="final-price">
+                                                                        @item.Price.Value.ToString("N0") ₫
+                                                                        <span class="sale-tag">-@discount%</span>
+                                                                    </span>
+                                                                    <span class="promotion-price">@item.Promotion_Price.Value.ToString("N0") ₫</span>
+                                                                </p>
+                                                            }
+                                                            else
+                                                            {
+                                                                <p class="price-sale">
+                                                                    <span class="final-price">
+                                                                        @item.Promotion_Price.Value.ToString("N0") ₫
+                                                                    </span>
+                                                                </p>
+                                                            }
+
+                                                            <a href="@url">
+                                                                <p>@(item.Product_Name.Length > 40 ? item.Product_Name.Substring(0, 40) : item.Product_Name)</p>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+                                    }
+                                </div>
+                            }
+                            tab++;
+                        }
+
+
+                    </div>
+                </div><!--/category-tab-->
+
+                <div class="recommended_items">
+                    <!--recommended_items-->
+                    <h2 class="title text-center">Sản phẩm dành cho bạn</h2>
+
+                    <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner">
+
+
+                            <div class="item active">
+                                @foreach (var item in lstProductRecommend_1.Where(x => x.Status == true))
+                                {
+                                    var url = "/san-pham/" + item.Metatitle.Trim() + "-" + item.ID;
+                                    <div class="col-sm-3">
+                                        <div class="product-image-wrapper">
+                                            <div class="single-products">
+                                                <div class="productinfo text-center">
+                                                    <a href="@url">
+                                                        <img src="~/Assets/images/product/@item.Image" alt="" />
+                                                    </a>
+                                                    @if (item.Price != null)
+                                                    {
+                                                        var discount = (int)((1 - (item.Price / item.Promotion_Price)) * 100);
+                                                        <p class="price-sale">
+                                                            <span class="final-price">
+                                                                @item.Price.Value.ToString("N0") ₫
+                                                                <span class="sale-tag">-@discount%</span>
+                                                            </span>
+                                                            <span class="promotion-price">@item.Promotion_Price.Value.ToString("N0") ₫</span>
+                                                        </p>
+                                                    }
+                                                    else
+                                                    {
+                                                        <p class="price-sale">
+                                                            <span class="final-price">
+                                                                @item.Promotion_Price.Value.ToString("N0") ₫
+                                                            </span>
+                                                        </p>
+                                                    }
+
+                                                    <a href="@url">
+                                                        <p>@(item.Product_Name.Length > 40 ? item.Product_Name.Substring(0, 40) : item.Product_Name)</p>
+                                                    </a>
+                                                </div>
+                                                @*<div class="btn-cart">
+                                                <a href="javascript:void(0)" class="btn btn-default add-to-cart btn-addCart" data-id="@item.ID" data-quantity="1">
+                                                    <i class="fa fa-shopping-cart"></i>Thêm giỏ hàng
+                                                </a>
+                                            </div>*@
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+                            <div class="item">
+                                @foreach (var item in lstProductRecommend_2.Where(x => x.Status == true))
+                                {
+                                    var url = "/san-pham/" + item.Metatitle.Trim().Trim().Trim() + "-" + item.ID;
+                                    <div class="col-sm-3">
+                                        <div class="product-image-wrapper"  style="max-height: 315px;">
+                                            <div class="single-products">
+                                                <div class="productinfo text-center">
+                                                    <a href="@url">
+                                                        <img src="~/Assets/images/product/@item.Image" alt="" />
+                                                    </a>
+                                                    @if (item.Price != null)
+                                                    {
+                                                        var discount = (int)((1 - (item.Price / item.Promotion_Price)) * 100);
+                                                        <p class="price-sale">
+                                                            <span class="final-price">
+                                                                @item.Price.Value.ToString("N0") ₫
+                                                                <span class="sale-tag">-@discount%</span>
+                                                            </span>
+                                                            <span class="promotion-price">@item.Promotion_Price.Value.ToString("N0") ₫</span>
+                                                        </p>
+                                                    }
+                                                    else
+                                                    {
+                                                        <p class="price-sale">
+                                                            <span class="final-price">
+                                                                @item.Promotion_Price.Value.ToString("N0") ₫
+                                                            </span>
+                                                        </p>
+                                                    }
+
+                                                    <a href="@url">
+                                                        <p>@(item.Product_Name.Length > 40 ? item.Product_Name.Substring(0, 40) : item.Product_Name)</p>
+                                                    </a>
+                                                </div>
+                                                @*<div class="btn-cart">
+                                                <a href="javascript:void(0)" class="btn btn-default add-to-cart btn-addCart" data-id="@item.ID" data-quantity="1">
+                                                    <i class="fa fa-shopping-cart"></i>Thêm giỏ hàng
+                                                </a>
+                                            </div>*@
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
+                            <i class="fa fa-angle-left"></i>
+                        </a>
+                        <a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                    </div>
+                </div><!--/recommended_items-->
+
+                <div class="category-tab">
+                    <h2 class="title text-center">Sản phẩm điện thoại nổi bật</h2>
+                    <!--category-tab-->
+                    <div class="col-sm-12">
+                        <ul class="nav nav-tabs">
+                            @foreach (var item in lstCategory.Where(x => x.Type == "Điện thoại"))
+                            {
+                                
+                                if (dem1 == 0)
+                                {
+                                    <li class="active"><a href="#Category_@item.ID" data-toggle="tab">@item.Name</a></li>
+                                }
+                                else
+                                {
+                                    <li><a href="#Category_@item.ID" data-toggle="tab">@item.Name</a></li>
+                                }
+                                dem1++;
+                            }
+                        </ul>
+                    </div>
+                    <div class="tab-content">
+                        @foreach (var jtem in lstCategory.Where(x => x.Type == "Điện thoại"))
+                        {
+                           
+                            if (tab1 == 0)
+                            {
+                                <div class="tab-pane fade active in" id="Category_@jtem.ID">
+                                    @foreach (var item in lstProductAll.Where(x => x.Status == true))
+                                    {
+                                        if (item.Category_ID == jtem.ID)
+                                        {
+                                            var url = "/san-pham/" + item.Metatitle.Trim() + "-" + item.ID;
+                                            <div class="col-sm-3">
+                                                <div class="product-image-wrapper" style="height: 270px;">
+                                                    <div class="single-products">
+                                                        <div class="productinfo text-center">
+                                                            <a href="@url">
+                                                                <img src="~/Assets/images/product/@item.Image" alt="" />
+                                                            </a>
+                                                            @if (item.Price != null)
+                                                            {
+                                                                var discount = (int)((1 - (item.Price / item.Promotion_Price)) * 100);
+                                                                <p class="price-sale">
+                                                                    <span class="final-price">
+                                                                        @item.Price.Value.ToString("N0") ₫
+                                                                        <span class="sale-tag">-@discount%</span>
+                                                                    </span>
+                                                                    <span class="promotion-price">@item.Promotion_Price.Value.ToString("N0") ₫</span>
+                                                                </p>
+                                                            }
+                                                            else
+                                                            {
+                                                                <p class="price-sale">
+                                                                    <span class="final-price">
+                                                                        @item.Promotion_Price.Value.ToString("N0") ₫
+                                                                    </span>
+                                                                </p>
+                                                            }
+
+                                                            <a href="@url">
+                                                                <p>@(item.Product_Name.Length > 40 ? item.Product_Name.Substring(0, 40) : item.Product_Name)</p>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+                                    }
+
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="tab-pane fade" id="Category_@jtem.ID">
+                                    @foreach (var item in lstProductAll.Where(x => x.Status == true))
+                                    {
+                                        if (item.Category_ID == jtem.ID)
+                                        {
+                                            var url = "/san-pham/" + item.Metatitle.Trim() + "-" + item.ID;
+                                            <div class="col-sm-3">
+                                                <div class="product-image-wrapper" style="height: 270px;">
+                                                    <div class="single-products">
+                                                        <div class="productinfo text-center">
+                                                            <a href="@url">
+                                                                <img src="~/Assets/images/product/@item.Image" alt="" />
+                                                            </a>
+                                                            @if (item.Price != null)
+                                                            {
+                                                                var discount = (int)((1 - (item.Price / item.Promotion_Price)) * 100);
+                                                                <p class="price-sale">
+                                                                    <span class="final-price">
+                                                                        @item.Price.Value.ToString("N0") ₫
+                                                                        <span class="sale-tag">-@discount%</span>
+                                                                    </span>
+                                                                    <span class="promotion-price">@item.Promotion_Price.Value.ToString("N0") ₫</span>
+                                                                </p>
+                                                            }
+                                                            else
+                                                            {
+                                                                <p class="price-sale">
+                                                                    <span class="final-price">
+                                                                        @item.Promotion_Price.Value.ToString("N0") ₫
+                                                                    </span>
+                                                                </p>
+                                                            }
+
+                                                            <a href="@url">
+                                                                <p>@(item.Product_Name.Length > 40 ? item.Product_Name.Substring(0, 40) : item.Product_Name)</p>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+                                    }
+                                </div>
+                            }
+                             tab1++;
+                        }
+
+
+                    </div>
+                </div><!--/category-tab-->
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,24 @@
+﻿
+@{
+    ViewBag.Title = "Bạn không có quyền truy cập";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section id="cart_items">
+    <div class="container">
+        <div class="breadcrumbs">
+            <ol class="breadcrumb">
+                <li><a href="/">Trang chủ</a></li>
+                <li class="active">Bạn không có quyền truy cập</li>
+            </ol>
+        </div>
+        <div class="table-responsive cart_info">
+            <div class="empty">
+                <img src="~/Assets/images/cart/error.png" alt="" class="empty__img">
+                <p class="empty__note">Bạn không có quyền truy cập vào link này, xin vui lòng quay lại.</p>
+                <a href="/" class="empty__btn">Quay lại trang chủ</a>
+            </div>
+        </div>
+    </div>
+</section>
+

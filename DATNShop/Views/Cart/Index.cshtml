@@ -1,0 +1,123 @@
+﻿@model List<ShoppingOnline.Models.DTO.CartDTO>
+@{
+    ViewBag.Title = "Giỏ hàng | E-Shopper";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    long tong = 0;
+    bool check = true;
+}
+
+<section id="cart_items">
+    <div class="container">
+        <div class="breadcrumbs">
+            <ol class="breadcrumb">
+                <li><a href="/">Trang chủ</a></li>
+                <li class="active">Giỏ hàng</li>
+            </ol>
+        </div>
+        <div class="table-responsive cart_info">
+            @if (Model.Count == 0)
+            {
+                <div class="empty">
+                    <img src="~/Assets/images/cart/emptycart.png" alt="" class="empty__img">
+                    <p class="empty__note">Không có sản phẩm nào trong giỏ hàng của bạn.</p>
+                    <a href="/" class="empty__btn">Tiếp tục mua sắm</a>
+                </div>
+            }
+            else
+            {
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            @*<th scope="col">#</th>*@
+                            <th colspan="2" class="text-center">Sản phẩm</th>
+                            <th scope="col">Giá (vnđ)</th>
+                            <th scope="col">Số lượng</th>
+                            <th scope="col">Tổng</th>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+
+                            decimal? total;
+                            var url = "/san-pham/" + item.Product.Metatitle.Trim() + "-" + item.Product.ID;
+                            <tr>
+                                <td class="cart_product">
+                                    <a href="@url"><img src="~/Assets/images/product/@item.Product.Image" width="110px" alt=""></a>
+                                </td>
+                                <td class="cart_description" style="width: 45%">
+                                    <h4><a href="@url">@item.Product.Product_Name</a></h4>
+                                    <p>Mã sản phẩm: @item.Product.Product_Code</p>
+                                    @if (item.actual_number == 0)
+                                    {
+                                        <p style="color: red">Sản phẩm đã hết hàng</p>
+                                        check = false;
+                                    }
+                                    else if (item.actual_number < 5)
+                                    {
+                                        <p style="color: blue">Còn @item.actual_number sản phẩm</p>
+                                    }
+                                </td>
+                                <td class="cart_price price-sale">
+
+                                    @if (item.Product.Price != null)
+                                    {
+                                        var discount = (int)((1 - (item.Product.Price / item.Product.Promotion_Price)) * 100);
+                                        total = item.Product.Price * item.Quantity;
+                                        <p class="final-price">@item.Product.Price.Value.ToString("N0")</p>
+                                        <p>
+                                            <span class="promotion-price">@item.Product.Promotion_Price.Value.ToString("N0")</span> |
+                                            <span class="sale-tag">-@discount %</span>
+                                        </p>
+                                        tong += (long)total;
+                                    }
+                                    else
+                                    {
+                                        total = item.Product.Promotion_Price * item.Quantity;
+                                        <p class="final-price">@item.Product.Promotion_Price.Value.ToString("N0")</p>
+                                        tong += (long)total;
+                                    }
+                                </td>
+                                <td class="cart_quantity">
+                                    <div class="cart_quantity_button">
+                                        <a class="cart_quantity_down" href="javascript:void(0)" data-id="@item.Product.ID"> - </a>
+                                        <input class="cart_quantity_input" type="text" name="quantity" value="@item.Quantity" id="quantity_@item.Product.ID" autocomplete="off" size="2">
+                                        <a class="cart_quantity_up" href="javascript:void(0)" data-id="@item.Product.ID"> + </a>
+                                    </div>
+                                </td>
+                                <td class="cart_total">
+                                    <p class="cart_total_price">@total.Value.ToString("N0")</p>
+                                </td>
+                                <td class="cart_delete">
+                                    <a class="cart_quantity_delete" href="javascript:void(0)" title="Xóa sản phẩm" data-id="@item.Product.ID"><i class="fa fa-times"></i></a>
+                                </td>
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+                <div class="total-checkout">
+                    <p class="prices__total">
+                        <span class="prices__text">Thành tiền: </span>
+                        <span class="prices__value prices__value--final">
+                            @tong.ToString("N0") đ
+                        </span>
+                    </p>
+                </div>
+                if (check == true)
+                {
+                    <div class="total-checkout">
+                        <a href="/Cart/Payment" class="cart__submit">Tiến hành đặt hàng</a>
+                    </div>
+                }
+
+            }
+
+
+        </div>
+    </div>
+</section>
+
+@section jsSection{
+}

@@ -1,0 +1,54 @@
+﻿
+@{
+    Layout = null;
+    var lstCategory = ViewBag.lstCategory as List<ShoppingOnline.Models.Entities.Category>;
+}
+
+<div class="header-bottom">
+    <!--header-bottom-->
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-7">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="mainmenu pull-left">
+                    <ul class="nav navbar-nav collapse navbar-collapse">
+                        <li><a href="/">Trang chủ</a></li>
+                        <li class="dropdown">
+                            <a href="#">Laptop<i class="fa fa-angle-down"></i></a>
+                            <ul role="menu" class="sub-menu">
+                                @foreach (var item in lstCategory.Where(x => x.Type == "Laptop"))
+                                {
+                                    var url = "/" + item.Metatitle.Trim() + "-" + item.ID;
+                                    <li><a href="@url">@item.Name</a></li>
+                                }
+
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#">Điện thoại<i class="fa fa-angle-down"></i></a>
+                            <ul role="menu" class="sub-menu">
+                                @foreach (var item in lstCategory.Where(x => x.Type == "Điện thoại"))
+                                {
+                                    var url = "/" + item.Metatitle.Trim() + "-" + item.ID;
+                                    <li><a href="@url">@item.Name</a></li>
+                                }
+
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#">Liên hệ</a>
+                        </li>
+                        <li><a href="#">Trợ giúp</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!--/header-bottom-->

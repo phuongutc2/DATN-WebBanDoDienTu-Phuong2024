@@ -1,0 +1,110 @@
+﻿@model PagedList.IPagedList<ShoppingOnline.Models.Entities.Product>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Tìm kiếm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var lstCategory = ViewBag.lstCategory as List<ShoppingOnline.Models.Entities.Category>;
+    var link = "/product/search?keyword=" + ViewBag.KeyWord;
+    var asc = "asc";
+    var desc = "desc";
+}
+
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                @{Html.RenderAction("Navigation", "Home");}
+            </div>
+
+            <div class="col-sm-9 padding-right">
+                <div class="features_items">
+                    <!--features_items-->
+                    <h2 class="title text-center">Kết quả tìm kiếm với từ khóa: <span style="color: blue">@ViewBag.KeyWord</span></h2>
+                    <div class="col-sm-12" style="margin-bottom: 15px;">
+                        <div class="option-box-wrap">
+                            <div class="option-box">
+                                <div class="sort-box-holder">
+                                    <div class="btn-group pull-left sort-box">
+                                        <span>Ưu tiên xem: </span>
+                                        <ul class="sort-list">
+                                            <li>
+                                                <a href="@link&order=@asc">GIÁ THẤP</a>
+                                            </li>
+                                            <li>
+                                                <a href="@link&order=@desc">GIÁ CAO</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    @foreach (var item in Model)
+                    {
+                        var url = "/san-pham/" + item.Metatitle.Trim() + "-" + item.ID;
+                        <div class="col-sm-3">
+                            <div class="product-image-wrapper" style="height: 250px;">
+                                <div class="single-products">
+                                    <div class="productinfo text-center">
+                                        <a href="@url">
+                                            <img src="~/Assets/images/product/@item.Image" alt="" />
+                                        </a>
+                                        @if (item.Price != null)
+                                        {
+                                            var discount = (int)((1 - (item.Price / item.Promotion_Price)) * 100);
+                                            <p class="price-sale">
+                                                <span class="final-price">
+                                                    @item.Price.Value.ToString("N0") ₫
+                                                    <span class="sale-tag">-@discount%</span>
+                                                </span>
+                                                <span class="promotion-price">@item.Promotion_Price.Value.ToString("N0") ₫</span>
+                                            </p>
+                                        }
+                                        else
+                                        {
+                                            <p class="price-sale">
+                                                <span class="final-price">
+                                                    @item.Promotion_Price.Value.ToString("N0") ₫
+                                                </span>
+                                            </p>
+                                        }
+
+                                        <a href="@url">
+                                            <p>@(item.Product_Name.Length > 40 ? item.Product_Name.Substring(0, 40) : item.Product_Name)</p>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <div class="col-sm-12 text-center">
+                        @Html.PagedListPager(Model, page => Url.Action("Search", new { keyword = ViewBag.KeyWord, order = ViewBag.orderby, page }))
+                    </div>
+                    
+                </div><!--features_items-->
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section jsSection{
+    <script>
+
+        $(document).ready(function () {
+
+             var url = window.location;
+            var element = $('ul.sort-list a').filter(function() {
+              return this.href == url || url.href.indexOf(this.href) == 0;
+            }).parent().addClass('active');
+
+            if (element.is('li')) {
+              element.addClass('active');
+            }
+        });
+
+    </script>
+}

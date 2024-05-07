@@ -1,0 +1,382 @@
+﻿
+@{ 
+        var user = Session["user"] as ShoppingOnline.Models.Entities.User;
+        var cart = Session["CartSession"] as List<ShoppingOnline.Models.DTO.CartDTO>;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="google-signin-client_id" content="138922275610-03nk3420t8hccjsd6a39aqg133v2217o.apps.googleusercontent.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>@ViewBag.Title | E-Shopper</title>
+    @*<link href="http://fonts.googleapis.com/css?family=Roboto:400,300,400italic,500,700,100" rel="stylesheet">
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,800,300,600,700" rel="stylesheet">
+        <link href="http://fonts.googleapis.com/css?family=Abel" rel="stylesheet">*@
+    @*<link href="~/Assets/css/bootstrap.min.css" rel="stylesheet">*@
+    @*<link href="~/Content/bootstrap.css" rel="stylesheet" />*@
+<link href="~/Areas/Admin/Assets/css/bootstrap.min.css" rel="stylesheet" />
+    @*<link href="~/Content/bootstrap.min.css" rel="stylesheet" />*@
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/smoothness/jquery-ui.css">
+    <link href="~/Assets/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/Assets/css/prettyPhoto.css" rel="stylesheet">
+    <link href="~/Assets/css/price-range.css" rel="stylesheet">
+    <link href="~/Assets/css/animate.css" rel="stylesheet">
+    @*<link href="~/Assets/css/PNotifyBrightTheme.css" rel="stylesheet" />*@
+    <link href="~/Assets/css/main.css" rel="stylesheet">
+    <link href="~/Assets/css/responsive.css" rel="stylesheet">
+
+    <!--notify-->
+
+    <link href="~/Areas/Admin/Assets/css/BrightTheme.css" rel="stylesheet" />
+    <link href="~/Areas/Admin/Assets/css/PNotify.css" rel="stylesheet" />
+    <link href="~/Areas/Admin/Assets/css/PNotifyBootstrap3.css" rel="stylesheet" />
+    <link href="~/Areas/Admin/Assets/css/PNotifyConfirm.css" rel="stylesheet" />
+    <script src="https://apis.google.com/js/api:client.js"></script>
+    <!--[if lt IE 9]>
+    <script src="~/Assets/js/html5shiv.js"></script>
+    <script src="~/Assets/js/respond.min.js"></script>
+    <![endif]-->
+    @*<link rel="shortcut icon" href="~/Assets/images/ico/favicon.ico">*@
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="~/Assets/images/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="~/Assets/images/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="~/Assets/images/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="~/Assets/images/ico/apple-touch-icon-57-precomposed.png">
+</head><!--/head-->
+
+<body>
+    <header id="header">
+        <!--header-->
+        <div class="header_top">
+            <!--header_top-->
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="contactinfo">
+                            <ul class="nav nav-pills">
+                                <li><a href="#"><i class="fa fa-phone"></i> +2 95 01 88 821</a></li>
+                                <li><a href="#"><i class="fa fa-envelope"></i> info@domain.com</a></li>
+                                @*@if (user != null)
+                                {
+                                    <li><a href="/Seller/User/Login"><i class="fa fa-buysellads"></i> Đăng nhập bán hàng</a></li>
+                                    <li><a href="/Admin/User/Login"><i class="fa fa-address-book"></i> Đăng nhập quản trị</a></li>
+                                }*@
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="social-icons pull-right">
+                            <ul class="nav navbar-nav">
+                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                                <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+                                <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!--/header_top-->
+
+        <div class="header-middle">
+            <!--header-middle-->
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="logo pull-left">
+                            <a href="/"><img src="~/Assets/images/home/logo.png" alt="" /></a>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="search_box">
+                            @*<input type="text" placeholder="Tìm kiếm sản phẩm..." class="form-control" />*@
+                            <form action="/product/search" method="get">
+                                <div class="col-md-7">
+                                    <input type="text" class="form-control" placeholder="Tìm kiếm sản phẩm..." name="keyword" id="txtKeyword" required>
+                                </div>
+                                <div class="col-md-2" style="margin-left:45px">
+                                    <button class="btn btn-outline-secondary" type="submit"><i class="fa fa-search"></i></button>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="shop-menu pull-right">
+                            <ul class="nav navbar-nav">
+                                @if (user != null)
+                                {
+                                    <li class="dropdown">
+                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user"></i> @user.Fullname</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="/User/InfoUser">Thông tin của bạn</a></li>
+                                            <li><a href="/User/MyOrder">Đơn hàng của bạn</a></li>
+                                            <li><a href="/User/OrderHistory">Lịch sử đơn hàng</a></li>
+                                            <li><a href="/doi-mat-khau/@user.ID">Đổi mật khẩu</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="/User/logout">Đăng xuất</a></li>
+                                        </ul>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li><a href="/User/Register"><i class="fa fa-sign-out"></i> Đăng ký</a></li>
+                                    <li><a href="/User/Login"><i class="fa fa-lock"></i> Đăng nhập</a></li>
+                                }
+                                <li>
+                                    <a href="/Cart">
+                                        <i class="fa fa-shopping-cart">
+                                        </i>
+                                        Giỏ hàng(
+                                        @if (cart != null)
+                                        {
+                                            <span style="color:red" class="cart_count">@cart.Count</span>
+                                        }
+                                        else
+                                        {
+                                            <span style="color:red" class="cart_count">0</span>
+                                        }
+                                        )
+                                    </a>
+                                </li>
+
+                            </ul>
+                            <!--Mini Cart Box-->
+                            <div class="mini_cart_box cart_box_one fhQCQR">
+                                <div class="dHEONM">
+                                    <a class="btn-close"><i class="fa fa-close" style="font-size: 21px;"></i></a>
+                                </div>
+                                <div class="checkout-cart">
+                                    <div class="price_content">
+                                        <div class="cart-total-price">
+                                            <span class="text-info-cart">
+                                                <i class="fa fa-check" style="color:aquamarine; padding-right:5px"></i>
+                                                Thêm giỏ hàng thành công
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="min_cart_checkout">
+                                        <a class="btn btn-primary btn-lg" href="/Cart">Xem giỏ hàng và thanh toán</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!--/header-middle-->
+        @{Html.RenderAction("MainMenu", "Home");}
+
+    </header><!--/header-->
+
+    @RenderBody()
+
+    <footer id="footer">
+        <!--Footer-->
+        <div class="footer-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <div class="companyinfo">
+                            <h2><span>e</span>-shopper</h2>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,sed do eiusmod tempor</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-7">
+                    </div>
+                    <div class="col-sm-3">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-widget">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <div class="single-widget">
+                            <h2>Service</h2>
+                            <ul class="nav nav-pills nav-stacked">
+                                <li><a href="#">Online Help</a></li>
+                                <li><a href="#">Contact Us</a></li>
+                                <li><a href="#">Order Status</a></li>
+                                <li><a href="#">Change Location</a></li>
+                                <li><a href="#">FAQ’s</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="single-widget">
+                            <h2>Quock Shop</h2>
+                            <ul class="nav nav-pills nav-stacked">
+                                <li><a href="#">T-Shirt</a></li>
+                                <li><a href="#">Mens</a></li>
+                                <li><a href="#">Womens</a></li>
+                                <li><a href="#">Gift Cards</a></li>
+                                <li><a href="#">Shoes</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="single-widget">
+                            <h2>Policies</h2>
+                            <ul class="nav nav-pills nav-stacked">
+                                <li><a href="#">Terms of Use</a></li>
+                                <li><a href="#">Privecy Policy</a></li>
+                                <li><a href="#">Refund Policy</a></li>
+                                <li><a href="#">Billing System</a></li>
+                                <li><a href="#">Ticket System</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="single-widget">
+                            <h2>About Shopper</h2>
+                            <ul class="nav nav-pills nav-stacked">
+                                <li><a href="#">Company Information</a></li>
+                                <li><a href="#">Careers</a></li>
+                                <li><a href="#">Store Location</a></li>
+                                <li><a href="#">Affillate Program</a></li>
+                                <li><a href="#">Copyright</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-sm-offset-1">
+                        <div class="single-widget">
+                            <h2>About Shopper</h2>
+                            <form action="#" class="searchform">
+                                <input type="text" placeholder="Your email address" />
+                                <button type="submit" class="btn btn-default"><i class="fa fa-arrow-circle-o-right"></i></button>
+                                <p>Get the most recent updates from <br />our site and be updated your self...</p>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="row">
+                    <p class="pull-left">Copyright © 2013 E-SHOPPER Inc. All rights reserved.</p>
+                    <p class="pull-right">Designed by <span><a target="_blank" href="http://www.themeum.com">Themeum</a></span></p>
+                </div>
+            </div>
+        </div>
+
+    </footer><!--/Footer-->
+    @*<script src="~/Assets/js/jquery.js"></script>*@
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+    <script src="//code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    @*<script src="~/Assets/js/bootstrap.min.js"></script>*@
+    <script src="~/Areas/Admin/Assets/js/PNotify.js"></script>
+    <script src="~/Areas/Admin/Assets/js/PNotifyBootstrap3.js"></script>
+    <script src="~/Areas/Admin/Assets/js/PNotifyConfirm.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+
+    <script src="~/Assets/js/jquery.scrollUp.min.js"></script>
+    <script src="~/Assets/js/price-range.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Assets/js/jquery.prettyPhoto.js"></script>
+    <script src="https://apis.google.com/js/platform.js?onload=onLoadCallback" async defer></script>
+    @*<script src="~/Assets/notify/notify.js"></script>
+    <script src="~/Assets/notify/PNotify.js"></script>*@
+    <script src="~/Assets/js/main.js"></script>
+    <script src="~/Assets/js/Cart.js"></script>
+    <script>
+        var common = {
+            init: function () {
+                common.registerEvent();
+            },
+            registerEvent: function () {
+                $("#txtKeyword").autocomplete({
+                    minLength: 0,
+                    source: function (request, response) {
+                        $.ajax({
+                            url: "/Product/ListName",//Link lấy dữ liệu gợi ý
+                            dataType: "json",
+                            data: {
+                                q: request.term
+                            },
+                            success: function (res) {
+                                response(res.data);
+                                //response($.map(data, function (item) {
+                                //    return {
+                                //        value: item.Product_Name,
+                                //        label: item.Image
+                                //    }
+                                //}));
+                            }
+                        });
+                    },
+                    focus: function (event, ui) {
+                        $("#txtKeyword").val(ui.item.label);
+                        return false;
+                    },
+                    select: function (event, ui) {
+                        $("#txtKeyword").val(ui.item.label);
+                        //$("#project-id").val(ui.item.value);
+                        //$("#project-description").html(ui.item.desc);
+                        //$("#project-icon").attr("src", "images/" + ui.item.icon);
+
+                        return false;
+                    }
+                })
+                    .autocomplete("instance")._renderItem = function (ul, item) {
+                        return $("<li>")
+                            //.append("<div>" + item.value + "<br>" + item.label + "</div>")
+                            .append("<div>" + item.value + "</div>")
+                            .appendTo(ul);
+                    };
+            }
+        }
+        common.init();
+    </script>
+
+    <script>
+
+        var googleUser = {};
+        var startApp = function () {
+            gapi.load('auth2', function () {
+                // Retrieve the singleton for the GoogleAuth library and set up the client.
+                auth2 = gapi.auth2.init({
+                    client_id: '138922275610-03nk3420t8hccjsd6a39aqg133v2217o.apps.googleusercontent.com',
+                    cookiepolicy: 'single_host_origin',
+                    // Request scopes in addition to 'profile' and 'email'
+                    //scope: 'additional_scope'
+                });
+                attachSignin(document.getElementById('customBtn'));
+            });
+        };
+
+        function attachSignin(element) {
+            auth2.attachClickHandler(element, {},
+                function (googleUser) {
+                    var profile = googleUser.getBasicProfile();
+                    $.ajax({
+                        type: "POST",
+                        url: "/User/LoginGmail",
+                        data: {
+                            email: profile.getEmail(),
+                            fullname: profile.getName()
+                        },
+                        dataType: "json",
+                        success: function (res) {
+                            if (res.status == true) {
+                                window.location.href = "/"
+                            }
+                        }
+                    })
+
+                });
+        }
+    </script>
+    <script>startApp();</script>
+    @RenderSection("jsSection", required: false)
+</body>
+</html>

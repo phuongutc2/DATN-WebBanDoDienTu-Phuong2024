@@ -1,0 +1,126 @@
+﻿
+@{
+    ViewBag.Title = "Chi tiết đơn hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var user = Session["user"] as ShoppingOnline.Models.Entities.User;
+    var orderdetail = ViewBag.OrderDetail as List<ShoppingOnline.Models.DTO.Order_DetailDTO>;
+    var order = ViewBag.Order as ShoppingOnline.Models.Entities.Order;
+    int dem = 0;
+    long total = 0;
+}
+
+<section>
+    <div class="container">
+        <div class="breadcrumbs">
+            <ol class="breadcrumb">
+                <li><a href="/">Trang chủ</a></li>
+                <li><a href="/User/OrderHistory">Lịch sử đơn hàng</a></li>
+                <li class="active">Chi tiết đơn hàng</li>
+            </ol>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="left-sidebar">
+                    <h2>Danh mục</h2>
+                    <div class="panel-group category-products" id="accordian">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"><a href="/User/InfoUser">Thông tin của bạn</a></h4>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"><a href="/User/MyOrder">Đơn hàng của bạn</a></h4>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"><a href="/User/OrderHistory">Lịch sử đơn hàng</a></h4>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"><a href="/doi-mat-khau/@user.ID">Đổi mật khẩu</a></h4>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="shipping text-center">
+                        <!--shipping-->
+                        <img src="~/Assets/images/home/shipping.jpg" alt="" />
+                    </div>
+                    <!--/shipping-->
+                </div>
+            </div>
+            <div class="col-sm-9">
+                <div class="blog-post-area">
+                    <h2 class="title text-center">Chi tiết đơn hàng: <span style="color:blue">@order.Order_Code</span></h2>
+                    <button class="btn btn-success" id="btnExport" data-id="@order.ID"><i class="fa fa-external-link"></i>Xuất hóa đơn</button>
+                    <div class="single-blog-post">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th class="text-center">Sản phẩm</th>
+                                                <th class="text-center">Số lượng</th>
+                                                <th class="text-center">Đơn giá</th>
+                                                <th class="text-center">Thành tiền</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in orderdetail)
+                                            {
+                                                dem++;
+                                                <tr>
+                                                    <td>@dem</td>
+                                                    <td>@item.Product_Name</td>
+                                                    <td class="text-center">@item.Quantity</td>
+                                                    <td class="text-center">@item.Price.Value.ToString("N0")</td>
+                                                    <td class="text-center">@item.Amount.Value.ToString("N0")</td>
+                                                </tr>
+                                                total += (long)item.Amount;
+                                            }
+                                            <tr>
+                                                <td colspan="3"></td>
+                                                <td style="font-size: 19px">Tổng tiền: </td>
+                                                <td class="text-center"><span class="price">@total.ToString("N0")</span> ₫</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section jsSection{
+
+    <script type="text/javascript">
+        $(function () {
+
+            $("#btnExport").click(function () {
+                var order_id = $(this).data('id');
+                var url = "/User/PrintBill/" + order_id
+                window.open(url, "_blank");
+                //window.location.href = url;
+            });
+
+            var url = window.location;
+            var element = $('h4.panel-title a').filter(function () {
+              return this.href == url ;
+            }).parent().parent().addClass('navigation-active');
+
+        });
+    </script>
+
+}

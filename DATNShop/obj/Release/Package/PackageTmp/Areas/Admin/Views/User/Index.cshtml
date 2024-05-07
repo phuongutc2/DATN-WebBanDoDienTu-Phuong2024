@@ -1,0 +1,145 @@
+﻿
+@{
+    ViewBag.Title = "Quản lý khách hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    int dem = 1;
+}
+
+@model PagedList.IPagedList<ShoppingOnline.Models.DTO.UserDTO>
+@using PagedList.Mvc
+
+
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+           
+            <div class="col-md-4">
+                <h3 class="page-header">Quản lý khách hàng</h3>
+            </div>
+            <div class="col-md-8" style="margin-top: 40px;">
+                <ol class="breadcrumb" style="text-align: right">
+                    <li><a href="#"><i class="fa fa-address-book-o fa-fw"></i>Quản lý người dùng</a></li>
+                    <li class="active">Danh sách khách hàng</li>
+                </ol>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <div class="row">
+            @if (TempData["add_success"] != null)
+            {
+                <div class="alert alert-success" id="AlertBox">
+                    @TempData["add_success"]
+                </div>
+            }
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Danh sách khách hàng tiềm năng của hệ thống
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="tblData">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th class="text-center">Thông tin khách hàng</th>
+                                        <th class="text-center">Tổng số lượng</th>
+                                        <th class="text-center">Số tiền đã mua (đ)</th>
+                                        <th class="text-center">Ngày đặt hàng gần nhất</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@dem</td>
+                                            <td>
+                                                <p>Họ tên: <b>@item.Fullname</b></p>
+                                                <p>SĐT: <b>@item.Phone</b>, Email: <b>@item.Email</b></p>
+                                                <p>Địa chỉ: <b>@item.Address</b></p>
+                                            </td>
+                                            <td class="text-center price">@item.TotalQuantity</td>
+                                            <td class="text-center price">@item.TotalMoney.Value.ToString("N0")</td>
+                                            <td class="text-center">@item.LastDayBought.Value.ToString("dd-MM-yyyy")</td>
+                                            @if (item.Status == true)
+                                            {
+                                                <td>
+                                                    <button class="btn btn-primary btnStatus" data-id="@item.User_ID" title="Khóa khách hàng">Đang hoạt động</button>
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td>
+                                                    <button class="btn btn-default btnStatus" data-id="@item.User_ID" title="Kích hoạt khách hàng">Đã khóa</button>
+                                                </td>
+                                            }
+                                        </tr>
+                                        dem++;
+                                    }
+
+
+                                </tbody>
+                            </table>
+                            Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+                            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize }))
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+
+        </div>
+
+    </div>
+    <!-- /.container-fluid -->
+</div>
+
+@section jsAdmin{
+
+    <script type="text/javascript">
+        $(function () {
+            $('#tblData').DataTable();
+            //nếu không có thao tác gì thì ẩn đi
+            $('#AlertBox').removeClass('hide');
+
+            //Sau khi hiển thị lên thì delay 1s và cuộn lên trên sử dụng slideup
+            $('#AlertBox').delay(2000).slideUp(500);
+
+
+            $('.btnStatus').off('click').on('click', function () {
+
+                $.ajax({
+                    data: { ID: $(this).data('id') },
+                    url: '/Admin/User/changeStatus',
+                    dataType: 'Json',
+                    type: 'POST',
+                    success: function (res) {
+                        if (res.status == true) {
+                            window.location.href = "/Admin/User/Index";
+                            PNotify.success({
+                                title: 'THÔNG BÁO!!',
+                                text: 'Cập nhật trạng thái thành công.'
+                            });
+                        }
+                    }
+                });
+
+            });
+
+
+
+
+    </script>
+
+}
+
+
+
+
+

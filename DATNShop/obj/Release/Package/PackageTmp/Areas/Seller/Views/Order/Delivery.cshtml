@@ -1,0 +1,195 @@
+﻿@model PagedList.IPagedList<ShoppingOnline.Models.Entities.Order>
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Đơn đang vận chuyển";
+    Layout = "~/Areas/Seller/Views/Shared/_Layout.cshtml";
+    int dem = 1;
+}
+
+
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4">
+                <h3 class="page-header">Quản lý đơn hàng</h3>
+            </div>
+            <div class="col-md-8" style="margin-top: 40px;">
+                <ol class="breadcrumb" style="text-align: right">
+                    <li><a href="#"><i class="fa fa-address-book-o fa-fw"></i>Quản lý đơn hàng</a></li>
+                    <li class="active">Đơn đang vận chuyển</li>
+                </ol>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <div class="row">
+            @if (TempData["add_success"] != null)
+            {
+                <div class="alert alert-success" id="AlertBox">
+                    @TempData["add_success"]
+                </div>
+            }
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Đơn hàng đang vận chuyển
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th class="text-center">Thông tin khách hàng</th>
+                                        <th class="text-center">Thông tin thanh toán</th>
+                                        <th class="text-center">Trạng thái</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@dem</td>
+                                            <td>
+                                                <p>Họ tên: <b>@item.CustomerName</b></p>
+                                                <p>SĐT: <b>@item.CustomerPhone</b>, Email: <b>@item.Email</b></p>
+                                                <p>Địa chỉ: <b>@item.CustomerAddress</b></p>
+                                                <p>Ngày đặt: <b>@item.CreatedDate.Value.ToString("dd-MM-yyyy")</b></p>
+                                            </td>
+                                            
+                                            <td>
+                                                <p>Tổng tiền: <b>@item.TotalMoney.Value.ToString("N0")</b></p>
+                                                <p>Số lượng: <b>@item.TotalQuantity</b></p>
+                                                <p>Mã đơn hàng: <b>@item.Order_Code</b></p>
+                                                <p>Thanh toán: <b>@(item.Payment == 0 ? Html.Raw("<span class='label label-default'>Khi nhận hàng</span>") : Html.Raw("<span class='label label-info'>Trực tuyến</span>"))</b></p>
+                                            </td>
+                                            <td class="text-center">
+                                                <button class="btn btn-warning btnStatus" data-id="@item.ID" title="Click để kích hoạt thanh toán">Đang vận chuyển</button> <br />
+                                                <p>Ngày vận chuyển: <b>@item.ShipDate.Value.ToString("dd-MM-yyyy")</b></p>
+                                            </td>
+                                            <td>
+                                                <a href="/Seller/Order/Order_Detail/@item.ID" class="btn btn-primary" title="Chi tiết đơn hàng"><i class="fa fa-info-circle"></i></a>
+                                                 <button class="btn btn-danger btnDelete" data-id="@item.ID" title="Từ chối đơn hàng"><i class="fa fa-remove"></i></button>
+                                            </td>
+
+                                        </tr>
+                                        dem++;
+                                    }
+
+
+                                </tbody>
+                            </table>
+                            Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+                            @Html.PagedListPager(Model, page => Url.Action("Delivery", new { page, pageSize = Model.PageSize }))
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+
+        </div>
+
+    </div>
+    <!-- /.container-fluid -->
+</div>
+
+@section jsSeller{
+
+    <script type="text/javascript">
+        $(function () {
+            //nếu không có thao tác gì thì ẩn đi
+            $('#AlertBox').removeClass('hide');
+
+            //Sau khi hiển thị lên thì delay 1s và cuộn lên trên sử dụng slideup
+            $('#AlertBox').delay(2000).slideUp(500);
+
+
+            $('.btnDelete').off('click').on('click', function () {
+                const notice = PNotify.notice({
+                    title: 'Thông báo',
+                    text: 'Bạn thật sự muốn từ chối đơn hàng này?',
+                    icon: 'fa fa-question-circle',
+                    width: '360px',
+                    minHeight: '110px',
+                    hide: false,
+                    closer: false,
+                    sticker: false,
+                    destroy: true,
+                    stack: new PNotify.Stack({
+                        dir1: 'down',
+                        modal: true,
+                        firstpos1: 25,
+                        overlayClose: false
+                    }),
+                    modules: new Map([
+                        ...PNotify.defaultModules,
+                        [PNotifyConfirm, {
+                            confirm: true
+                        }]
+                    ])
+                });
+
+                notice.on('pnotify:confirm', () =>
+                    $.ajax({
+                        data: {ID: $(this).data('id')},
+                        url: '/Seller/Order/Delete',
+                        dataType: 'Json',
+                        type: 'POST',
+                        success: function (res) {
+                            if (res.status == true) {
+                                PNotify.success({
+                                    title: 'THÔNG BÁO!!',
+                                    text: 'Từ chối đơn hàng thành công.'
+                                });
+                                setTimeout(function(){ window.location.href = "/Seller/Order/Cancer"; }, 2000);
+                            } else {
+                                PNotify.error({
+                                    title: 'THÔNG BÁO!!',
+                                    text: 'Từ chối KHÔNG thành công.'
+                                });
+                            }
+                        }
+                    })
+
+                );
+
+
+            });
+
+            $('.btnStatus').off('click').on('click', function () {
+
+                $.ajax({
+                    data: { ID: $(this).data('id') },
+                    url: '/Seller/Order/changStatus',
+                    dataType: 'Json',
+                    type: 'POST',
+                    success: function (res) {
+                        if (res.status == true) {
+                            PNotify.success({
+                                title: 'THÔNG BÁO!!',
+                                text: 'Cập nhật trạng thái thành công.'
+                            });
+                            setTimeout(function(){ window.location.href = "/Seller/Order/Payment"; }, 2000);
+                        } else {
+                            PNotify.error({
+                                title: 'THÔNG BÁO!!',
+                                text: 'Cập nhật trạng thái KHÔNG thành công. Số lượng sản phẩm không đủ để thanh toán.'
+                            });
+                        }
+                    }
+                });
+
+            });
+        });
+    </script>
+
+}
+
+
+

@@ -1,0 +1,164 @@
+﻿@{
+    ViewBag.Title = "Thông tin của bạn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var user = Session["user"] as ShoppingOnline.Models.Entities.User;
+}
+
+<section>
+    <div class="container">
+        <div class="breadcrumbs">
+            <ol class="breadcrumb">
+                <li><a href="/">Trang chủ</a></li>
+                <li class="active">Thông tin của bạn</li>
+            </ol>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="left-sidebar">
+                    <h2>Danh mục</h2>
+                    <div class="panel-group category-products" id="accordian">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"><a href="/User/InfoUser" class="active">Thông tin của bạn</a></h4>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"><a href="/User/MyOrder">Đơn hàng của bạn</a></h4>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"><a href="/User/OrderHistory">Lịch sử đơn hàng</a></h4>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"><a href="/doi-mat-khau/@user.ID">Đổi mật khẩu</a></h4>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="shipping text-center">
+                        <!--shipping-->
+                        <img src="~/Assets/images/home/shipping.jpg" alt="" />
+                    </div>
+                    <!--/shipping-->
+                </div>
+            </div>
+            <div class="col-sm-9">
+                <div class="blog-post-area">
+                    <h2 class="title text-center">Thông tin của bạn</h2>
+                    @if (TempData["update"] != null)
+                    {
+                        <div class="alert alert-@TempData["type_alert"] text-center">
+                            @TempData["update"]
+                        </div>
+                    }
+                    <div class="single-blog-post">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        @using (Html.BeginForm("UpdateUser", "User", FormMethod.Post))
+                                        {
+                                            <input type="hidden" name="ID" value="@user.ID" />
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Họ và tên</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" name="Fullname" value="@user.Fullname ">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Số điện thoại</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" name="Phone" value="@user.Phone">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Địa chỉ</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" name="Address" value="@user.Address">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">Email</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" name="Email" value="@user.Email">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label"></label>
+                                                <div class="col-sm-8">
+                                                    <button type="submit" class="btn btn-success btn-lg">Cập nhật</button>
+                                                </div>
+
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+                                <!-- /.row (nested) -->
+                            </div>
+                            <!-- /.panel-body -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section jsSection{
+    <script>
+        $(document).ready(function () {
+             jQuery.validator.addMethod("phonenu", function (value, element) {
+                if (/^(09[0-9]|07[0|6|7|8|9]|03[2-9]|08[1-5])+([0-9]{7})\b/g.test(value)) {
+                    return true;
+                } else {
+                    return false;
+                };
+             }, "Invalid phone number");
+             jQuery.validator.addMethod("email_regex", function (value, element) {
+                if (/^[a-z][a-z0-9_\.]{5,32}@@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$/g.test(value)) {
+                    return true;
+                } else {
+                    return false;
+                };
+             }, "Invalid email");
+
+            //Khi bàn phím được nhấn và thả ra thì sẽ chạy phương thức này
+            $("#frmPayment").validate({
+                rules: {
+                    Fullname: "required",
+                    Address: "required",
+                    Phone: {
+                        required: true,
+                        phonenu: true
+                    },
+                    Email: {
+                        required: true,
+                        email_regex: true
+                    }
+                },
+                messages: {
+                    Fullname: "Vui lòng nhập họ và tên",
+                    Address: "Vui lòng nhập địa chỉ",
+                    Phone: {
+                        required: "Vui lòng nhập số điện thoại",
+                        phonenu: "Số điện thoại không hợp lệ"
+                    },
+                    Email: {
+                        required: "Vui lòng nhập email",
+                        email_regex: "Email không hợp lệ"
+                    }
+                }
+            });
+        });
+    </script>
+
+}

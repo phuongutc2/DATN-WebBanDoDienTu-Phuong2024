@@ -1,0 +1,207 @@
+﻿
+@{
+    ViewBag.Title = "Đơn hàng của bạn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var order = ViewBag.MyOrder as List<ShoppingOnline.Models.DTO.OrderDTO>;
+    var user = Session["user"] as ShoppingOnline.Models.Entities.User;
+    int dem = 0;
+}
+
+<section>
+    <div class="container">
+        <div class="breadcrumbs">
+            <ol class="breadcrumb">
+                <li><a href="/">Trang chủ</a></li>
+                <li class="active">Đơn hàng của bạn</li>
+            </ol>
+        </div>
+        @if (order.Count == 0)
+        {
+            <div class="table-responsive cart_info">
+                <div class="empty">
+                    <img src="~/Assets/images/cart/emptycart.png" alt="" class="empty__img">
+                    <p class="empty__note">Bạn chưa có đơn hàng nào.</p>
+                    <a href="/" class="empty__btn">Đi mua sắm</a>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="left-sidebar">
+                        <h2>Danh mục</h2>
+                        <div class="panel-group category-products" id="accordian">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"><a href="/User/InfoUser">Thông tin của bạn</a></h4>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"><a href="/User/MyOrder">Đơn hàng của bạn</a></h4>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"><a href="/User/OrderHistory">Lịch sử đơn hàng</a></h4>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"><a href="/doi-mat-khau/@user.ID">Đổi mật khẩu</a></h4>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="shipping text-center">
+                            <!--shipping-->
+                            <img src="~/Assets/images/home/shipping.jpg" alt="" />
+                        </div>
+                        <!--/shipping-->
+                    </div>
+                </div>
+                <div class="col-sm-9">
+                    <div class="blog-post-area">
+                        <h2 class="title text-center">Đơn hàng của bạn</h2>
+
+                        <div class="single-blog-post col-sm-12">
+
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th class="text-center">Thông tin đơn hàng</th>
+                                            <th class="text-center">Thông tin thanh toán</th>
+                                            <th class="text-center">Trạng thái</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in order)
+                                        {
+                                            dem++;
+                                            <tr>
+                                                <td>@dem</td>
+                                                <td>
+                                                    <p>Mã đơn: <b>@item.Order_Code</b></p>
+                                                    <p>Ngày đặt: <b>@item.CreatedDate.Value.ToString("dd-MM-yyyy")</b></p>
+                                                    <p>Ngày ship: <b>@(item.ShipDate != null ? Html.Raw(item.ShipDate.Value.ToString("dd-MM-yyyy")) : Html.Raw("<i>Đang xác nhận</i>"))</b></p>
+
+                                                </td>
+
+                                                <td>
+                                                    <p>Tổng tiền: <b>@item.TotalMoney.Value.ToString("N0")</b></p>
+                                                    <p>Tổng số lượng: <b>@item.Quantity</b></p>
+                                                    <p>Thanh toán: <b>@(item.Payment == 0 ? Html.Raw("<span class='label label-default'>Khi nhận hàng</span>") :  Html.Raw("<span class='label label-info'>Trực tuyến</span>"))</b></p>
+                                                </td>
+                                                @if (item.Status == 0)
+                                                {
+                                                    <td class="text-center"><span class="label label-danger">Đã hủy</span></td>
+                                                }
+                                                else if (item.Status == 1)
+                                                {
+                                                    <td class="text-center">
+                                                        <span class="label label-warning">Chờ xác nhận đơn</span> <br />
+                                                        @(item.Payment == 1 ? Html.Raw("<span class='label label-primary'>Đã thanh toán</span>") : Html.Raw(""))
+                                                    </td>
+                                                }
+                                                else if (item.Status == 2)
+                                                {
+                                                    <td class="text-center">
+                                                        <span class="label label-success">Đang vận chuyển</span> <br />
+                                                        @(item.Payment == 1 ? Html.Raw("<span class='label label-primary'>Đã thanh toán</span>") : Html.Raw(""))
+                                                    </td>
+                                                }
+                                                else if (item.Status == 3)
+                                                {
+                                                    <td><span class="label label-primary">Đã thanh toán</span></td>
+                                                }
+                                                <td class="text-center" width="12%">
+                                                    <a href="/User/OrderDetail/@item.Order_ID" class="btn btn-info" title="Xem chi tiết đơn hàng"><i class="fa fa-info"></i></a>
+                                                    @if (item.Status == 1 && item.Payment == 0)
+                                                    {
+                                                        <button data-id="@item.Order_ID" class="btn btn-danger btnCancer" title="Hủy đơn hàng"><i class="fa fa-ban"></i></button>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+</section>
+
+
+@section jsSection{
+
+    <script type="text/javascript">
+        $(function () {
+
+            $('.btnCancer').off('click').on('click', function () {
+                const notice = PNotify.notice({
+                    title: 'Thông báo',
+                    text: 'Bạn thật sự muốn hủy đơn hàng?',
+                    icon: 'fa fa-question-circle',
+                    width: '360px',
+                    minHeight: '110px',
+                    hide: false,
+                    closer: false,
+                    sticker: false,
+                    destroy: true,
+                    stack: new PNotify.Stack({
+                        dir1: 'down',
+                        modal: true,
+                        firstpos1: 25,
+                        overlayClose: false
+                    }),
+                    modules: new Map([
+                        ...PNotify.defaultModules,
+                        [PNotifyConfirm, {
+                            confirm: true
+                        }]
+                    ])
+                });
+
+                notice.on('pnotify:confirm', () =>
+                    $.ajax({
+                        data: { ID: $(this).data('id') },
+                        url: '/User/CancerOrder',
+                        dataType: 'Json',
+                        type: 'POST',
+                        success: function (res) {
+                            if (res.status == true) {
+                                window.location.href = "/User/OrderHistory";
+                                PNotify.success({
+                                    title: 'THÔNG BÁO!!',
+                                    text: 'Hủy đơn hàng thành công.'
+                                });
+                            }
+                        }
+                    })
+
+                );
+
+
+            });
+
+            var url = window.location;
+
+            var element = $('h4.panel-title a').filter(function () {
+              return this.href == url ;
+            }).parent().parent().addClass('navigation-active');
+
+        });
+    </script>
+
+}

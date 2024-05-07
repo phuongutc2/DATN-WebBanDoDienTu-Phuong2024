@@ -1,0 +1,321 @@
+﻿@using ShoppingOnline.Models.Entities;
+@{
+    ViewBag.Title = "Danh mục sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    int dem = 1, dem_1 = 1;
+    var laptop = ViewBag.laptop as List<Category>;
+    var phone = ViewBag.phone as List<Category>;
+}
+
+
+
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+           
+            <div class="col-md-4">
+                <h3 class="page-header">Quản lý hãng sản xuất</h3>
+            </div>
+            <div class="col-md-8" style="margin-top: 40px;">
+                <ol class="breadcrumb" style="text-align: right">
+                    <li><a href="#"><i class="fa fa-users fa-fw"></i>Quản lý chung</a></li>
+                    <li class="active">Quản lý hãng sản xuất</li>
+                </ol>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <div class="row">
+            @if (TempData["add_success"] != null)
+            {
+                <div class="alert alert-success text-center" id="AlertBox">
+                    @TempData["add_success"]
+                </div>
+            }
+        </div>
+        <div class="row">
+            <div class="col-md-4" style="margin-bottom: 10px">
+                <button class="btn btn-lg btn-primary" data-toggle="modal" data-target="#addCategory">Thêm mới </button>
+            </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="addCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-center text-uppercase" id="exampleModalLabel">Thêm mới danh mục sản phẩm</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        @using (Html.BeginForm("addCategory", "Category", FormMethod.Post, new { enctype = "multipart/form-data", id = "frmAdd" }))
+                        {
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Tên hãng sản xuất:</label>
+                                <input type="text" name="Name" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Thuộc loại sản phẩm:</label>
+                                <select name="Type" class="form-control">
+                                    <option value="">---Chọn loại sản phẩm---</option>
+                                    <option value="Laptop">Laptop</option>
+                                    <option value="Điện thoại">Điện thoại</option>
+                                </select>
+                            </div>
+                            <div class="form-group text-center">
+                                <button type="submit" class="btn btn-primary btn-lg">Thêm mới</button>
+                            </div>
+                        }
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Danh mục sản phẩm <b>Laptop</b>
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th class="text-center">Tên hãng</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in laptop)
+                                    {
+                                        <tr>
+                                            <td>@dem</td>
+                                            <td class="text-center">@item.Name</td>
+                                            <td>
+                                                <button class="btn btn-default btnEdit" data-id="@item.ID" title="Cập nhật danh mục"><i class="fa fa-edit"></i></button>
+                                                <button class="btn btn-danger btnDelete" data-id="@item.ID" title="Xóa danh mục"><i class="fa fa-remove"></i></button>
+                                            </td>
+                                        </tr>
+                                        dem++;
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Hãng sản xuất <b>Điện thoại</b>
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th class="text-center">Tên hãng</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in phone)
+                                    {
+                                        <tr>
+                                            <td>@dem_1</td>
+                                            <td class="text-center">@item.Name</td>
+                                            <td>
+                                                <button class="btn btn-default btnEdit" data-id="@item.ID" title="Cập nhật danh mục"><i class="fa fa-edit"></i></button>
+                                                <button class="btn btn-danger btnDelete" data-id="@item.ID" title="Xóa danh mục"><i class="fa fa-remove"></i></button>
+                                            </td>
+                                        </tr>
+                                        dem_1++;
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+        </div>
+
+    </div>
+    <!-- /.container-fluid -->
+</div>
+
+<!-- Modal -->
+<div class="modal fade editCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center text-uppercase" id="exampleModalLabel">Cập nhật danh mục sản phẩm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("editCategory", "Category", FormMethod.Post, new { enctype = "multipart/form-data", id = "frmEdit"  }))
+                {
+                    <input type="hidden" name="ID" id="ID" />
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Tên hãng:</label>
+                        <input type="text" name="Name" id="Edit_Name" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="col-form-label">Thuộc loại sản phẩm:</label>
+                        <select name="Type" class="form-control" id="Type">
+                            <option value="">---Chọn loại danh mục---</option>
+                            <option value="Laptop">Laptop</option>
+                            <option value="Điện thoại">Điện thoại</option>
+                        </select>
+                    </div>
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn btn-primary">Cập nhật</button>
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section jsAdmin{
+
+    <script type="text/javascript">
+        $(function () {
+           
+            //nếu không có thao tác gì thì ẩn đi
+            $('#AlertBox').removeClass('hide');
+
+            //Sau khi hiển thị lên thì delay 1s và cuộn lên trên sử dụng slideup
+            $('#AlertBox').delay(2000).slideUp(500);
+
+
+            $('.btnDelete').off('click').on('click', function () {
+
+                const notice = PNotify.notice({
+                    title: 'Thông báo',
+                    text: 'Bạn thật sự muốn xóa?',
+                    icon: 'fa fa-question-circle',
+                    width: '360px',
+                    minHeight: '110px',
+                    hide: false,
+                    closer: false,
+                    sticker: false,
+                    destroy: true,
+                    stack: new PNotify.Stack({
+                        dir1: 'down',
+                        modal: true,
+                        firstpos1: 25,
+                        overlayClose: false
+                    }),
+                    modules: new Map([
+                        ...PNotify.defaultModules,
+                        [PNotifyConfirm, {
+                            confirm: true
+                        }]
+                    ])
+                });
+
+                notice.on('pnotify:confirm', () =>
+                     $.ajax({
+                        data: { ID: $(this).data('id') },
+                        url: '/Admin/Category/Delete',
+                        dataType: 'Json',
+                        type: 'POST',
+                        success: function (res) {
+                            if (res.status == true) {
+                                PNotify.success({
+                                    title: 'THÔNG BÁO!!',
+                                    text: 'Xóa danh mục sản phẩm thành công.'
+                                });
+                                window.location.href = "/Admin/Category/Index";
+                            } else {
+                                PNotify.error({
+                                    title: 'THÔNG BÁO!!',
+                                    text: 'Xóa danh mục sản phẩm KHÔNG thành công.'
+                                });
+                            }
+                        }
+                    })
+
+                );
+                //notice.on('pnotify:cancel', () => alert('Oh ok. Chicken, I see.'));
+
+
+
+
+            });
+
+            $('.btnEdit').click(function(event) {
+                $('.editCategory').modal('show');
+                //alert($(this).data('id'));
+                var ID = $(this).data('id');
+                $.ajax({
+                        url: "/Admin/Category/GetCategoryByID/" + ID,
+                        type: 'GET',
+                        dataType: 'json',
+                        contentType: "application/json; charset=utf-8",
+                        success: function (res) {
+                            $('#Edit_Name').val(res.Name);
+                            $('select#Type').val(res.Type);
+                            $('#ID').val(res.ID);
+                        }
+                    });
+            });
+
+            // add the rule here
+            $.validator.addMethod("select_validate", function (value, element, arg) {
+                return arg !== value;
+            }, "Value must not equal arg.");
+            //Khi bàn phím được nhấn và thả ra thì sẽ chạy phương thức này
+            $("#frmAdd").validate({
+                rules: {
+                    Name: "required",
+                    Type: { select_validate: "" }
+                },
+                messages: {
+                    Name: "Vui lòng nhập tên hãng sản xuất",
+                    Type: { select_validate: "Bạn chưa chọn loại sản phẩm!" }
+                }
+            });
+
+            $("#frmEdit").validate({
+                rules: {
+                    Name: "required",
+                    Type: { select_validate: "" }
+                },
+                messages: {
+                    Name: "Vui lòng nhập tên hãng sản xuất",
+                    Type: { select_validate: "Bạn chưa chọn loại sản phẩm!" }
+                }
+            });
+
+        });
+    </script>
+
+}
+
+
+
+
+

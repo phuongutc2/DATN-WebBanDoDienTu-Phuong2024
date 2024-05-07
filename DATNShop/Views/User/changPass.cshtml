@@ -1,0 +1,67 @@
+﻿
+@{
+    ViewBag.Title = "Đổi mật khẩu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var user = Session["user"] as ShoppingOnline.Models.Entities.User;
+}
+
+<section id="form-login">
+    <!--form-->
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-1">
+                <div class="login-form">
+                    <!--login form-->
+                    <h2>Đổi mật khẩu E-Shopper</h2>
+                    @if (TempData["error"] != null)
+                    {
+                        <div class="alert alert-danger">
+                            @TempData["error"]
+                        </div>
+                    }
+                    @using (Html.BeginForm("frmchangePass", "User", FormMethod.Post, new { id = "frmChangePass" }))
+                    {
+                        <input type="hidden" name="ID" value="@user.ID" />
+                        <input type="password" placeholder="Nhập mật khẩu cũ" name="ex_password">
+                        <input type="password" placeholder="Nhập mật khẩu mới" id="Password" name="Password">
+                        <input type="password" placeholder="Nhập lại mật khẩu" id="re_Password" name="re_Password">
+                        <button type="submit" class="btn btn-default">Đổi mật khẩu</button>
+                    }
+
+                </div>
+                <!--/login form-->
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section jsSection{
+    <script>
+        $(document).ready(function () {
+             
+            //Khi bàn phím được nhấn và thả ra thì sẽ chạy phương thức này
+            $("#frmChangePass").validate({
+                rules: {
+                    Password: {
+                        required: true
+                    },
+                    re_Password: {
+                        required: true,
+                        equalTo: "#Password"
+                    }
+                },
+                messages: {
+                    Password: {
+                        required: 'Vui lòng nhập mật khẩu'
+                    },
+                    re_Password: {
+                        required: 'Vui lòng nhập lại mật khẩu',
+                        equalTo: 'Mật khẩu không trùng'
+                    }
+                }
+            });
+        });
+    </script>
+
+}
