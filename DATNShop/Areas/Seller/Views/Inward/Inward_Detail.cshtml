@@ -1,0 +1,96 @@
+﻿@model List<ShoppingOnline.Models.Entities.Inward_Detail>
+@{
+    ViewBag.Title = "Chi tiết nhập kho";
+    Layout = "~/Areas/Seller/Views/Shared/_Layout.cshtml";
+    int dem = 0, soluong = 0;
+    var inward = ViewBag.Inward as ShoppingOnline.Models.Entities.Inward;
+    long tongtien = 0;
+}
+
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="col-md-4">
+                    <h3 class="page-header">Chi tiết nhập kho </h3>
+
+                </div>
+                <div class="col-md-8" style="margin-top: 40px;">
+                    <ol class="breadcrumb" style="text-align: right">
+                        <li><a href="/Seller/Inward/Index"><i class="fa fa-inbox fa-fw"></i>Nhật ký nhập kho</a></li>
+                        <li class="active">Chi tiết nhập kho</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <p>Ngày nhập: <b>@inward.Createdate.Value.ToString("dd-MM-yyyy")</b></p>
+                        <p>Tổng số lượng: <b>@inward.TotalQuantity</b></p>
+                        <p>Tổng tiền: <b>@inward.TotalAmount.Value.ToString("N0")</b> đ</p>
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr role="row">
+                                        <th class="text-center">
+                                            STT
+                                        </th>
+                                        <th class="text-center" colspan="2" width="50%">
+                                            Sản phẩm
+                                        </th>
+                                      
+                                        <th class="text-center">
+                                            Số lượng
+                                        </th>
+                                        <th class="text-center">
+                                            Đơn giá
+                                        </th>
+                                        <th class="text-center">
+                                            Thành tiền
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        dem++;
+                                        tongtien += (long)item.Amount;
+                                        soluong += (int)item.Quantity;
+                                        <tr class="gradeA even" role="row">
+                                            <td class="text-center">@dem</td>
+                                            <td><img src="~/Assets/images/product/@item.Product.Image" alt="" width="100px" /></td>
+                                            <td>@item.Product.Product_Name</td>
+                                            <td class="text-center">@item.Quantity</td>
+                                            <td class="text-center">@item.Price.Value.ToString("N0")</td>
+                                            <td class="text-center">@item.Amount.Value.ToString("N0")</td>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <td colspan="3"></td>
+                                        <td class="text-center">Tổng số lượng</td>
+                                        <td class="text-center" style="font-size: 24px; font-weight: bold; color: red">@soluong</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3"></td>
+                                        <td class="text-center">Tổng tiền</td>
+                                        <td class="text-center" style="font-size: 24px; font-weight: bold; color: red">@tongtien.ToString("N0") đ</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</div>
+

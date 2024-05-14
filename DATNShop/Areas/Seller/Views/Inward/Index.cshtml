@@ -1,0 +1,160 @@
+﻿@using ShoppingOnline.Models.Entities;
+@model PagedList.IPagedList<Inward>
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Nhật ký nhập kho";
+    Layout = "~/Areas/Seller/Views/Shared/_Layout.cshtml";
+    var lstproduct_inward = ViewBag.quantity_product as List<Product>;
+    int dem_1 = 0;
+}
+
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- /.col-lg-12 -->
+            <div class="col-lg-12">
+                <div class="col-md-4">
+                    <h3 class="page-header">Nhật ký nhập kho</h3>
+                </div>
+                <div class="col-md-8" style="margin-top: 40px;">
+                    <ol class="breadcrumb" style="text-align: right">
+                        <li><a href="/Seller/Inward/Index"><i class="fa fa-inbox fa-fw"></i> Quản lý kho</a></li>
+                        <li class="active">Nhật ký nhập kho</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            @if (TempData["add_success"] != null)
+            {
+                <div class="alert @TempData["alert"] text-center text-uppercase" id="AlertBox">
+                    @TempData["add_success"]
+                </div>
+            }
+        </div>
+        <div class="row">
+            <div class="col-md-4" style="margin-bottom: 10px">
+                <a href="/Seller/Inward/Add" class="btn btn-lg btn-primary">Nhập kho </a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-5">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Nhật ký nhập kho
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr role="row">
+                                        <th class="text-center">
+                                            #
+                                        </th>
+                                        <th class="text-center">
+                                            Thông tin đơn nhập
+                                        </th>
+                                        <th class="text-center">
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model != null)
+                                    {
+                                        int dem = 0;
+
+                                        foreach (var item in Model)
+                                        {
+                                            dem++;
+
+                                            <tr class="gradeA even" role="row">
+                                                <td class="text-center">@dem</td>
+                                                <td>
+                                                    <p>Tổng số lượng: <b>@item.TotalQuantity</b></p>
+                                                    <p>Tổng tiền: <b>@item.TotalAmount.Value.ToString("N0")</b> đ</p>
+                                                    <p>Ngày nhập: <b>@item.Createdate.Value.ToString("dd-MM-yyyy")</b></p>
+                                                </td>
+                                                <td class="text-center">
+                                                    <a href="/Seller/Inward/Inward_Detail/@item.ID" class="btn btn-primary">
+                                                        <i class="fa fa-calculator fa-fw" style="padding-right: 10px;"></i>Xem chi tiết
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    }
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+                    <div class="panel-footer text-center">
+                        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = Model.PageSize }))
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+            </div>
+            <div class="col-sm-7">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Danh sách sản phẩm tồn kho
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th class="text-center">Mã sản phẩm</th>
+                                        <th class="text-center">Tên sản phẩm</th>
+                                        <th class="text-center">Số lượng tồn</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in lstproduct_inward)
+                                    {
+                                        dem_1++;
+                                        <tr>
+                                            <td>@dem_1</td>
+                                            <td>@item.Product_Code</td>
+                                            <td>@item.Product_Name</td>
+                                            <td class="text-center">@item.Quantity</td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</div>
+
+@section jsSeller{
+
+    <script type="text/javascript">
+        $(function () {
+
+            //nếu không có thao tác gì thì ẩn đi
+            $('#AlertBox').removeClass('hide');
+
+            //Sau khi hiển thị lên thì delay 1s và cuộn lên trên sử dụng slideup
+            $('#AlertBox').delay(2000).slideUp(500);
+
+
+           
+        });
+    </script>
+
+}
+

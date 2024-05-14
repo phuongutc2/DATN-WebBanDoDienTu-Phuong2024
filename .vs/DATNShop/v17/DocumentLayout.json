@@ -3,12 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\PC\\source\\repos\\DATNShop\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{FF268546-F665-424C-B8BE-11B197395E10}|DATNShop\\DATNShop.csproj|c:\\users\\pc\\source\\repos\\datnshop\\datnshop\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{FF268546-F665-424C-B8BE-11B197395E10}|DATNShop\\DATNShop.csproj|solutionrelative:datnshop\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{FF268546-F665-424C-B8BE-11B197395E10}|DATNShop\\DATNShop.csproj|c:\\users\\pc\\source\\repos\\datnshop\\datnshop\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FF268546-F665-424C-B8BE-11B197395E10}|DATNShop\\DATNShop.csproj|solutionrelative:datnshop\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FF268546-F665-424C-B8BE-11B197395E10}|DATNShop\\DATNShop.csproj|c:\\users\\pc\\source\\repos\\datnshop\\datnshop\\models\\entities\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FF268546-F665-424C-B8BE-11B197395E10}|DATNShop\\DATNShop.csproj|solutionrelative:datnshop\\models\\entities\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{FF268546-F665-424C-B8BE-11B197395E10}|DATNShop\\DATNShop.csproj|c:\\users\\pc\\source\\repos\\datnshop\\datnshop\\views\\cart\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FF268546-F665-424C-B8BE-11B197395E10}|DATNShop\\DATNShop.csproj|solutionrelative:datnshop\\views\\cart\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FF268546-F665-424C-B8BE-11B197395E10}|DATNShop\\DATNShop.csproj|c:\\users\\pc\\source\\repos\\datnshop\\datnshop\\controllers\\homecontroller1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FF268546-F665-424C-B8BE-11B197395E10}|DATNShop\\DATNShop.csproj|solutionrelative:datnshop\\controllers\\homecontroller1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FF268546-F665-424C-B8BE-11B197395E10}|DATNShop\\DATNShop.csproj|c:\\users\\pc\\source\\repos\\datnshop\\datnshop\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FF268546-F665-424C-B8BE-11B197395E10}|DATNShop\\DATNShop.csproj|solutionrelative:datnshop\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,27 +34,54 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Product.cs",
-              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\DATNShop\\DATNShop\\Models\\Entities\\Product.cs",
-              "RelativeDocumentMoniker": "DATNShop\\Models\\Entities\\Product.cs",
-              "ToolTip": "C:\\Users\\PC\\source\\repos\\DATNShop\\DATNShop\\Models\\Entities\\Product.cs",
-              "RelativeToolTip": "DATNShop\\Models\\Entities\\Product.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABIAAAAJAAAA",
+              "DocumentIndex": 2,
+              "Title": "HomeController1.cs",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\DATNShop\\DATNShop\\Controllers\\HomeController1.cs",
+              "RelativeDocumentMoniker": "DATNShop\\Controllers\\HomeController1.cs",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\DATNShop\\DATNShop\\Controllers\\HomeController1.cs",
+              "RelativeToolTip": "DATNShop\\Controllers\\HomeController1.cs",
+              "ViewState": "AQIAAE0AAAAAAAAAAAAAwBMAAAAmAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-23T18:11:59.522Z"
+              "WhenOpened": "2024-05-14T16:27:04.825Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "CartController.cs",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\DATNShop\\DATNShop\\Controllers\\CartController.cs",
+              "RelativeDocumentMoniker": "DATNShop\\Controllers\\CartController.cs",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\DATNShop\\DATNShop\\Controllers\\CartController.cs*",
+              "RelativeToolTip": "DATNShop\\Controllers\\CartController.cs*",
+              "ViewState": "AQIAAEUAAAAAAAAAAAAowFkAAAANAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-14T16:23:57.851Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\DATNShop\\DATNShop\\Views\\Cart\\Index.cshtml",
+              "RelativeDocumentMoniker": "DATNShop\\Views\\Cart\\Index.cshtml",
+              "ToolTip": "C:\\Users\\PC\\source\\repos\\DATNShop\\DATNShop\\Views\\Cart\\Index.cshtml",
+              "RelativeToolTip": "DATNShop\\Views\\Cart\\Index.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-05-14T16:25:30.132Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\Users\\PC\\source\\repos\\DATNShop\\DATNShop\\Views\\Home\\Index.cshtml",
               "RelativeDocumentMoniker": "DATNShop\\Views\\Home\\Index.cshtml",
               "ToolTip": "C:\\Users\\PC\\source\\repos\\DATNShop\\DATNShop\\Views\\Home\\Index.cshtml",
               "RelativeToolTip": "DATNShop\\Views\\Home\\Index.cshtml",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAAbAAAA",
+              "ViewState": "AQIAADYAAAAAAAAAAAAAAE8AAAAnAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-04-23T18:02:05.637Z",
+              "WhenOpened": "2024-05-14T15:56:14.07Z",
               "EditorCaption": ""
             }
           ]

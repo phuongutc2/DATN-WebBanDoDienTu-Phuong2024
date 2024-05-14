@@ -1,0 +1,123 @@
+﻿
+
+@model PagedList.IPagedList<ShoppingOnline.Models.Entities.Order>
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Đơn đã hủy / từ chối";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    int dem = 1;
+}
+
+
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4">
+                    <h3 class="page-header">Quản lý đơn hàng</h3>
+                </div>
+                <div class="col-md-8" style="margin-top: 40px;">
+                    <ol class="breadcrumb" style="text-align: right">
+                        <li><a href="#"><i class="fa fa-address-book-o fa-fw"></i>Quản lý đơn hàng</a></li>
+                        <li class="active">Đơn đã hủy / từ chối</li>
+                    </ol>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <div class="row">
+                @if (TempData["add_success"] != null)
+                {
+                    <div class="alert alert-success" id="AlertBox">
+                        @TempData["add_success"]
+                    </div>
+                }
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Đơn hàng đã hủy / từ chối
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th class="text-center">Thông tin khách hàng</th>
+                                            <th class="text-center">Thông tin thanh toán</th>
+                                            <th class="text-center">Trạng thái</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>@dem</td>
+                                                <td>
+                                                    <p>Họ tên: <b>@item.CustomerName</b></p>
+                                                    <p>SĐT: <b>@item.CustomerPhone</b>, Email: <b>@item.Email</b></p>
+                                                    <p>Địa chỉ: <b>@item.CustomerAddress</b></p>
+                                                    <p>Ngày đặt: <b>@item.CreatedDate.Value.ToString("dd-MM-yyyy")</b></p>
+                                                </td>
+                                                <td>
+                                                    <p>Tổng tiền: <b>@item.TotalMoney.Value.ToString("N0")</b></p>
+                                                    <p>Số lượng: <b>@item.TotalQuantity</b> </p>
+                                                    <p>Mã đơn hàng: <b>@item.Order_Code</b></p>
+                                                    <p>Thanh toán: <b>@(item.Payment == 0 ? Html.Raw("<span class='label label-default'>Khi nhận hàng</span>") : Html.Raw("<span class='label label-info'>Trực tuyến</span>"))</b></p>
+                                                </td>
+                                                <td class="text-center">
+                                                    @if (item.Status == 0)
+                                                    {
+                                                        <span class="label label-danger" title="Đơn hàng đã hủy">Đã hủy</span> <br />
+                                                        <p>Ngày hủy: <b>@item.CancerDate.Value.ToString("dd-MM-yyyy")</b></p>
+                                                    }
+                                                    else if (item.Status == -1)
+                                                    {
+                                                        <span class="label label-default" title="Đơn hàng đã từ chối">Đã từ chối</span> <br />
+                                                        <p>Ngày từ chối: <b>@item.CancerDate.Value.ToString("dd-MM-yyyy")</b></p>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    <a href="/Seller/Order/Order_Detail/@item.ID" class="btn btn-primary" title="Chi tiết đơn hàng"><i class="fa fa-info-circle"></i></a>
+                                                </td>
+
+                                            </tr>
+                                            dem++;
+                                        }
+
+
+                                    </tbody>
+                                </table>
+                                Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+                                @Html.PagedListPager(Model, page => Url.Action("CancerOrder", new { page, pageSize = Model.PageSize }))
+                            </div>
+                            <!-- /.table-responsive -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+
+            </div>
+
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+
+@section jsAdmin{
+
+    <script type="text/javascript">
+
+    </script>
+
+}
+
+
+
+
+
+
+

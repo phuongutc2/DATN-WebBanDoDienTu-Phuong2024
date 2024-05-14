@@ -1,0 +1,288 @@
+﻿@using ShoppingOnline.Models.Entities;
+@{
+    ViewBag.Title = "Quản lý truy cập";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    int dem = 1;
+   
+}
+@model PagedList.IPagedList<User>
+@using PagedList.Mvc
+
+
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4">
+                <h3 class="page-header">Quản lý truy cập</h3>
+            </div>
+            <div class="col-md-8" style="margin-top: 40px;">
+                <ol class="breadcrumb" style="text-align: right">
+                    <li><a href="#"><i class="fa fa-users fa-fw"></i>Quản lý chung</a></li>
+                    <li class="active">Quản lý truy cập</li>
+                </ol>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <div class="row">
+            @if (TempData["add_success"] != null)
+            {
+                <div class="alert alert-success text-center" id="AlertBox">
+                    @TempData["add_success"]
+                </div>
+            }
+        </div>
+        <div class="row">
+            <div class="col-md-4" style="margin-bottom: 10px">
+                <button class="btn btn-lg btn-primary" data-toggle="modal" data-target="#addCategory">Thêm mới </button>
+            </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="addCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-center text-uppercase" id="exampleModalLabel">Thêm mới truy cập</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        @using (Html.BeginForm("Add", "Login", FormMethod.Post, new { enctype = "multipart/form-data", id = "frmAdd" }))
+                        {
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Họ và tên:</label>
+                                <input type="text" name="Fullname" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Tài khoản đăng nhập:</label>
+                                <input type="text" name="Account" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Mật khẩu:</label>
+                                <input type="password" name="Password" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Phân quyền:</label>
+                                <select name="Type" class="form-control">
+                                    <option value="">---Chọn phân quyền---</option>
+                                    <option value="1">Quản trị viên</option>
+                                    <option value="0">Nhân viên</option>
+                                </select>
+                            </div>
+                            <div class="form-group text-center">
+                                <button type="submit" class="btn btn-primary btn-lg">Thêm mới</button>
+                            </div>
+                        }
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Danh mục truy cập
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th class="text-center">Họ và tên</th>
+                                        <th class="text-center">Tên đăng nhập</th>
+                                        <th class="text-center">Phân quyền</th>
+                                        <th class="text-center">Trạng thái</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@dem</td>
+                                            <td class="text-center">@item.Fullname</td>
+                                            <td class="text-center">@item.Account</td>
+                                            <td class="text-center">
+                                                <select class="form-control changeRole" data-id="@item.ID">
+                                                    <option value="1" @(item.Type == 1 ? "selected": "")>Quản trị viên</option>
+                                                    <option value="0" @(item.Type == 0 ? "selected": "")>Nhân viên</option>
+                                                </select>
+                                            </td>
+                                            <td class="text-center">
+                                                @if (item.Status == true)
+                                                {
+                                                    <button class="btn btn-primary btnStatus" data-id="@item.ID" title="Khóa tài khoản">Đang hoạt động</button>
+                                                }
+                                                else
+                                                {
+                                                    <button class="btn btn-default btnStatus" data-id="@item.ID" title="Kích hoạt tài khoản">Đã khóa</button>
+                                                }
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-danger btnDelete" data-id="@item.ID" title="Xóa tài khoản"><i class="fa fa-remove"></i></button>
+                                            </td>
+                                        </tr>
+                                        dem++;
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+           
+        </div>
+
+    </div>
+    <!-- /.container-fluid -->
+</div>
+
+<!-- Modal -->
+
+@section jsAdmin{
+
+    <script type="text/javascript">
+        $(function () {
+
+            //nếu không có thao tác gì thì ẩn đi
+            $('#AlertBox').removeClass('hide');
+
+            //Sau khi hiển thị lên thì delay 1s và cuộn lên trên sử dụng slideup
+            $('#AlertBox').delay(2000).slideUp(500);
+
+
+            $('.btnDelete').off('click').on('click', function () {
+
+                const notice = PNotify.notice({
+                    title: 'Thông báo',
+                    text: 'Bạn thật sự muốn xóa?',
+                    icon: 'fa fa-question-circle',
+                    width: '360px',
+                    minHeight: '110px',
+                    hide: false,
+                    closer: false,
+                    sticker: false,
+                    destroy: true,
+                    stack: new PNotify.Stack({
+                        dir1: 'down',
+                        modal: true,
+                        firstpos1: 25,
+                        overlayClose: false
+                    }),
+                    modules: new Map([
+                        ...PNotify.defaultModules,
+                        [PNotifyConfirm, {
+                            confirm: true
+                        }]
+                    ])
+                });
+
+                notice.on('pnotify:confirm', () =>
+                    $.ajax({
+                        data: { ID: $(this).data('id') },
+                        url: '/Admin/Login/Delete',
+                        dataType: 'Json',
+                        type: 'POST',
+                        success: function (res) {
+                            if (res.status == true) {
+                                PNotify.success({
+                                    title: 'THÔNG BÁO!!',
+                                    text: 'Xóa tài khoản thành công.'
+                                });
+                                setTimeout(function(){  window.location.href = "/Admin/Login/Index"; }, 2000);
+                               
+                            } else {
+                                PNotify.error({
+                                    title: 'THÔNG BÁO!!',
+                                    text: 'Xóa tài khoản KHÔNG thành công.'
+                                });
+                            }
+                        }
+                    })
+
+                );
+
+            });
+
+            // add the rule here
+            $.validator.addMethod("select_validate", function (value, element, arg) {
+                return arg !== value;
+            }, "Value must not equal arg.");
+            //Khi bàn phím được nhấn và thả ra thì sẽ chạy phương thức này
+            $("#frmAdd").validate({
+                rules: {
+                    Fullname: "required",
+                    Account: "required",
+                    Type: { select_validate: "" }
+                },
+                messages: {
+                    Fullname: "Vui lòng nhập họ và tên",
+                    Account: "Vui lòng nhập tên truy cập",
+                    Type: { select_validate: "Bạn chưa chọn phân quyền!" }
+                }
+            });
+
+            $('.changeRole').change(function () {
+                var type = this.value;
+                var user_id = $(this).data('id');
+                $.ajax({
+                    data: {
+                        ID: user_id,
+                        Type: type
+                    },
+                    url: '/Admin/Login/UpdateRole',
+                    dataType: 'Json',
+                    type: 'POST',
+                    success: function () {
+                        
+                        PNotify.success({
+                            title: 'THÔNG BÁO!!',
+                            text: 'Cập nhật phân quyền thành công.'
+                        });
+                        
+                        setTimeout(function () { window.location.href = "/Admin/Login/Index"; }, 2000);
+                    }
+                });
+
+            });
+
+            $('.btnStatus').off('click').on('click', function () {
+
+                $.ajax({
+                    data: { ID: $(this).data('id') },
+                    url: '/Admin/User/changeStatus',
+                    dataType: 'Json',
+                    type: 'POST',
+                    success: function (res) {
+                        if (res.status == true) {
+                            
+                            PNotify.success({
+                                title: 'THÔNG BÁO!!',
+                                text: 'Cập nhật trạng thái thành công.'
+                            });
+                            setTimeout(function () { window.location.href = "/Admin/Login/Index"; }, 2000);
+                        }
+                    }
+                });
+
+            });
+        });
+    </script>
+
+}
+
+
+
+
+

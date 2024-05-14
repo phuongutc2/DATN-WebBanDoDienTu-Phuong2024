@@ -45,6 +45,22 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "AutoTest.ArgumentNullException": {
+              "target": "Package",
+              "version": "[0.10.0, )"
+            },
+            "HtmlHelper": {
+              "target": "Package",
+              "version": "[1.0.0, )"
+            },
+            "PagedList": {
+              "target": "Package",
+              "version": "[1.17.0, )"
+            },
+            "System.Web.Mvc.Extensions.Mvc.4": {
+              "target": "Package",
+              "version": "[1.0.9, )"
+            },
             "System.Xml.Linq": {
               "target": "Package",
               "version": "[3.5.21022.801, )"

@@ -1,9 +1,10 @@
-﻿@using ShoppingOnline.Models.Entities;
+﻿@using DATNShop.Models.Entities
+@using ShoppingOnline.Models.Entities;
 @{
     ViewBag.Title = "Trang chủ";
     Layout = "~/Views/Shared/_layout.cshtml";
     var lstProduct = ViewBag.LstProduct as List<Product>;
-   
+
     var lstProductRecommend_1 = ViewBag.lstProductRecommend_1 as List<Product>;
     var lstProductRecommend_2 = ViewBag.lstProductRecommend_2 as List<Product>;
 
@@ -17,7 +18,7 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-3">
-                @{Html.RenderAction("Navigation", "Home");}
+                @{Html.ActionLink("Navigation", "Home");}
             </div>
 
             <div class="col-sm-9 padding-right">

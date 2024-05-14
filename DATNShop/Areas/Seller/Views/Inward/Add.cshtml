@@ -1,0 +1,295 @@
+﻿@using ShoppingOnline.Models.DTO;
+@using ShoppingOnline.Models.Entities;
+
+@{
+    ViewBag.Title = "Nhập kho";
+    Layout = "~/Areas/Seller/Views/Shared/_Layout.cshtml";
+    float tong = 0;
+    int total_quantity = 0;
+    var add_inward = Session["add_inward"] as List<CartDTO>;
+    var lstproduct = ViewBag.lstproduct as List<Product>;
+    var seller = Session["seller_login"] as User;
+}
+
+
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="col-md-4">
+                    <h3 class="page-header">Nhập kho</h3>
+                </div>
+                <div class="col-md-8" style="margin-top: 40px;">
+                    <ol class="breadcrumb" style="text-align: right">
+                        <li><a href="/Seller/Inward/Index"><i class="fa fa-inbox fa-fw"></i> Quản lý kho</a></li>
+                        <li class="active">Nhập kho</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Nhập sản phẩm vào kho
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <form action="" method="get">
+                                    <div class="form-group col-md-4">
+                                        <label>Tên sản phẩm</label>
+                                        <select class="form-control select2" name="Product_Name" id="Product_ID">
+                                            <option value="">---Chọn sản phẩm---</option>
+                                            @foreach (var item in lstproduct)
+                                            {
+                                                <option value="@item.ID" >@item.Product_Name</option>
+                                            }
+                                        </select>
+
+                                        @*<input type="text" class="form-control" name="Product_Name" id="Product_Name" placeholder="Nhập tên sản phẩm">*@
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label>Số lượng</label>
+                                        <input type="number" class="form-control" name="Quantity" id="Quantity" placeholder="Nhập số lượng" min="1" value="1">
+                                    </div>
+
+                                    <div class="col-md-3" style="margin-top: 24px;">
+                                        <button type="button" class="btn btn-default" id="btnAdd_InwardProduct">Thêm</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                        <!-- /.row (nested) -->
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <!-- /.row -->
+
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="table table-striped table-bordered table-hover dataTable no-footer" id="dataTables-example" role="grid" aria-describedby="dataTables-example_info">
+                    <thead>
+                        <tr role="row">
+                            <th class="text-center" style="width: 20px;">
+                                STT
+                            </th>
+                            <th class="text-center" style="width: 209px;">
+                                Tên sản phẩm
+                            </th>
+                            <th class="text-center" style="width: 192px;">
+                                Số lượng
+                            </th>
+                            <th class="text-center" style="width: 142px;">
+                                Đơn giá
+                            </th>
+                            <th class="text-center" style="width: 142px;">
+                                Thành tiền
+                            </th>
+                            <th class="text-center" style="width: 103px;">
+
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (add_inward != null)
+                        {
+                            int dem = 0;
+                            float price = 0, price_promotion = 0;
+
+                            foreach (var item in add_inward)
+                            {
+                                dem++;
+                                if (item.Product.Price != null)
+                                {
+                                    price = (float)(item.Product.Price * item.Quantity);
+                                    tong = tong + (float)price;
+                                    total_quantity += item.Quantity;
+                                    price_promotion = (float)item.Product.Price;
+                                }
+                                else
+                                {
+                                    price = (float)(item.Product.Promotion_Price * item.Quantity);
+                                    tong = tong + (float)price;
+                                    total_quantity += item.Quantity;
+                                    price_promotion = (float)item.Product.Promotion_Price;
+                                }
+
+                                <tr class="gradeA even" role="row">
+                                    <td class="sorting_1">@dem</td>
+                                    <td>@item.Product.Product_Name</td>
+                                    <td><input type="number" name="Quantity" value="@item.Quantity" min="1" class="form-control text-center" id="txtQuantity-@item.Product.ID" /></td>
+                                    <td class="text-center">@price_promotion.ToString("N0")</td>
+                                    <td class="text-center">@price.ToString("N0")</td>
+                                    <td class="text-center">
+                                        <button class="btn btn-primary Edit_InwardProduct" data-id="@item.Product.ID" title="Sửa số lượng sản phẩm"><i class="fa fa-pencil-square-o"></i></button>
+                                        <button class="btn btn-danger Delete_InwardProduct" data-id="@item.Product.ID" title="Xóa sản phẩm"><i class="fa fa-times"></i></button>
+                                    </td>
+                                </tr>
+                            }
+
+                        }
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        @if (tong != 0)
+        {
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="dataTables_info" id="dataTables-example_info" role="status" aria-live="polite"></div>
+                </div>
+                <div class="col-sm-4" style="margin-bottom:10px">
+                    <div class="dataTables_info" id="dataTables-example_info" role="status" aria-live="polite">
+                        Tổng tiền: <span style="color:red; font-weight:bold; font-size:25px">@tong.ToString("N0")</span>vnđ
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-8">
+                        @using (Html.BeginForm("AddInward", "Inward", FormMethod.Post, new { enctype = "multipart/form-data", id = "order_" }))
+                        {
+                            <input type="hidden" name="TotalAmount" value="@tong" />
+                            <input type="hidden" name="TotalQuantity" value="@total_quantity" />
+                            <input type="hidden" name="User_ID" value="@seller.ID" />
+                            <div class="col-md-4"></div>
+                            if (add_inward != null)
+                            {
+                                <div class="col-md-8">
+                                    <button type="submit" class="btn btn-primary btn-lg">Nhập kho</button>
+                                </div>
+                            }
+
+                        }
+
+                    </div>
+                </div>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</div>
+<!-- /#page-wrapper -->
+
+@section jsSeller{
+
+    <script>
+
+        $(document).ready(function () {
+            $(".select2").select2();
+            
+
+            $("#btnAdd_InwardProduct").click(function () {
+                var product_id = $('#Product_ID').val();
+
+                if (product_id == '') {
+                    PNotify.error({
+                        title: 'THÔNG BÁO!!',
+                        text: 'Bạn vui lòng chọn sản phẩm.'
+                    });
+                    return;
+                }
+
+                var quantity = $('#Quantity').val();
+                $.ajax({
+                    url: '/Seller/Inward/addInwardProduct',
+                    data: {
+                        product_id: product_id,
+                        quantity: quantity
+                    },
+                    dataType: 'Json',
+                    type: 'POST',
+                    success: function (res) {
+                        if (res.status == true) {
+                            window.location.href = "/Seller/Inward/Add";
+                            PNotify.success({
+                                title: 'THÔNG BÁO!!',
+                                text: 'Thêm sản phẩm thành công.'
+                            });
+                        } else {
+                            PNotify.error({
+                                title: 'THÔNG BÁO!!',
+                                text: 'Thêm sản phẩm KHÔNG thành công.'
+                            });
+                        }
+                    }
+                });
+            });
+
+            $(".Edit_InwardProduct").click(function () {
+                var id = $(this).data('id');
+                var Quantity = $('#txtQuantity-' + id).val();
+
+                $.ajax({
+                    data: {
+                        ID: id,
+                        Quantity: Quantity
+                    },
+                    url: '/Seller/Inward/Edit',
+                    dataType: 'Json',
+                    type: 'POST',
+                    success: function (res) {
+                        if (res.status == true) {
+                            window.location.href = "/Seller/Inward/Add";
+                            PNotify.success({
+                                title: 'THÔNG BÁO!!',
+                                text: 'Sửa số lượng thành công.'
+                            });
+                        } else {
+                            PNotify.error({
+                                title: 'THÔNG BÁO!!',
+                                text: 'Thêm số lượng KHÔNG thành công.'
+                            });
+                        }
+                    }
+                });
+            });
+
+            $('.Delete_InwardProduct').off('click').on('click', function () {
+
+                $.ajax({
+                    data: { ID: $(this).data('id') },
+                    url: '/Seller/Inward/Delete_InwardProduct',
+                    dataType: 'Json',
+                    type: 'POST',
+                    success: function (res) {
+                        if (res.status == true) {
+                            window.location.href = "/Seller/Inward/Add";
+                            PNotify.success({
+                                title: 'THÔNG BÁO!!',
+                                text: 'Xóa sản phẩm thành công.'
+                            });
+                        } else {
+                            PNotify.error({
+                                title: 'THÔNG BÁO!!',
+                                text: 'Xóa sản phẩm KHÔNG thành công.'
+                            });
+                        }
+                    }
+                });
+            });
+
+        });
+    </script>
+
+}
+
+
+
+

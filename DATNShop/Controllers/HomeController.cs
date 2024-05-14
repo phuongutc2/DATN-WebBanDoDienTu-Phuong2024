@@ -1,32 +1,53 @@
-using DATNShop.Models;
-using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
+﻿using Microsoft.AspNetCore.Mvc;
+using PagedList;
+using ShoppingOnline.Models.Business;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
 
-namespace DATNShop.Controllers
+namespace ShoppingOnline.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : System.Web.Mvc.Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        public System.Web.Mvc.ActionResult Index()
         {
-            _logger = logger;
-        }
+            var model = new ProductBusiness();
+            ViewBag.LstProduct = model.getAll();
+        
+            ViewBag.lstProductRecommend_1 = model.getProductRecommend();
+            ViewBag.lstProductRecommend_2 = model.getProductRecommend();
 
-        public IActionResult Index()
-        {
+            ViewBag.lstCategory = model.GetCategories();
+            ViewBag.lstProductAll = model.getAllProduct();
             return View();
         }
 
-        public IActionResult Privacy()
+        public System.Web.Mvc.ActionResult GetProductByCategory(string Metatitle, long ID, string order = null, int page = 1, int pagesize = 6)
         {
-            return View();
+            var model = new ProductBusiness().getProductByCategory(ID, page, pagesize, order);
+#pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
+            ViewBag.Category = new ProductBusiness().FindCategory(ID);
+#pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
+            ViewBag.lstCategory = new ProductBusiness().GetCategories();
+            ViewBag.orderby = order; 
+            return View(model);
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        //Load menu
+        [ChildActionOnly]
+        public System.Web.Mvc.PartialViewResult MainMenu()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            ViewBag.lstCategory = new ProductBusiness().GetCategories();
+            return PartialView();
+        }
+
+        [ChildActionOnly]
+        public System.Web.Mvc.PartialViewResult Navigation()
+        {
+            ViewBag.lstCategory = new ProductBusiness().GetCategories();
+            return PartialView();
         }
     }
 }

@@ -29,3 +29,6 @@ C:\Users\PC\source\repos\DATNShop\DATNShop\obj\Debug\net8.0\DATNShop.pdb
 C:\Users\PC\source\repos\DATNShop\DATNShop\obj\Debug\net8.0\DATNShop.genruntimeconfig.cache
 C:\Users\PC\source\repos\DATNShop\DATNShop\obj\Debug\net8.0\ref\DATNShop.dll
 C:\Users\PC\source\repos\DATNShop\DATNShop\obj\Debug\net8.0\DATNShop.sourcelink.json
+C:\Users\PC\source\repos\DATNShop\DATNShop\obj\Debug\net8.0\DATNShop.Resource.resources
+C:\Users\PC\source\repos\DATNShop\DATNShop\obj\Debug\net8.0\DATNShop.csproj.GenerateResource.cache
+C:\Users\PC\source\repos\DATNShop\DATNShop\obj\Debug\net8.0\DATNShop.csproj.AssemblyReference.cache

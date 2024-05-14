@@ -1,0 +1,424 @@
+﻿
+@{
+    ViewBag.Title = "Trang quản trị";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var Count_money = ViewBag.Count_money;
+    var quantity_product = ViewBag.quantity_product as List<ShoppingOnline.Models.DTO.UserDTO>;
+    var product_sell = ViewBag.product_sell as List<ShoppingOnline.Models.DTO.Order_DetailDTO>;
+    int dem_1 = 0, dem_2 = 0;
+    var money = ViewBag.Money_today;
+}
+
+
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="col-md-4">
+                    <h3 class="page-header">Thống kê & báo cáo</h3>
+                </div>
+                <div class="col-md-8" style="margin-top: 40px;">
+                    <ol class="breadcrumb" style="text-align: right">
+                        <li><a href="#"><i class="fa fa-dashboard fa-fw"></i>Trang chủ</a></li>
+                        <li class="active">Thống kê & báo cáo</li>
+                    </ol>
+                </div>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <!-- /.row -->
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-lg-2 col-md-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-2">
+                                <i class="fa fa-tasks fa-4x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">@ViewBag.Count_sell</div>
+                                <div></div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#">
+                        <div class="panel-footer">
+                            <span class="pull-left"></span>
+                            <span class="pull-right text-panel">Sản phẩm đã bán !</span>
+
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-2">
+                                <i class="fa fa-product-hunt fa-4x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right" style="padding: 10px 1px">
+                                <div style="font-size: 24px;">@(money != null ? money.ToString("N0") : "0") đ</div>
+                                <div></div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#">
+                        <div class="panel-footer">
+                            <span class="pull-left"></span>
+                            <span class="pull-right text-panel">Doanh thu hôm nay!</span>
+
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="panel panel-green">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-2">
+                                <i class="fa fa-money fa-4x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right" style="padding: 10px 1px;">
+                                <div style="font-size: 24px; ">@(Count_money != null ? Count_money.ToString("N0") : "0") đ</div>
+                                <div></div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#">
+                        <div class="panel-footer">
+                            <span class="pull-left"></span>
+                            <span class="pull-right text-panel">Tổng Doanh thu!</span>
+
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-6">
+                <div class="panel panel-yellow">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-2">
+                                <i class="fa fa-shopping-cart fa-4x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">@ViewBag.Count_Order</div>
+                                <div></div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#">
+                        <div class="panel-footer">
+                            <span class="pull-left"></span>
+                            <span class="pull-right text-panel">Tổng đơn hàng!</span>
+
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <i class="fa fa-bar-chart-o fa-fw"></i>Thống kê doanh thu theo tháng
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div id="SaleChart"></div>
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <i class="fa fa-bar-chart-o fa-fw"></i>Sản phẩm bán chạy
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th class="text-center">Tên sản phẩm</th>
+                                        <th class="text-center">Số lượng</th>
+                                        <th class="text-center">Tổng tiền (đ)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in product_sell)
+                                    {
+                                        dem_2++;
+                                        <tr>
+                                            <td class="text-center">@dem_2</td>
+                                            <td>@item.Product_Name</td>
+                                            <td class="text-center">@item.Quantity</td>
+                                            <td class="text-center">@item.Amount.Value.ToString("N0")</td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+                </div>
+            </div>
+            <!-- /.col-lg-8 -->
+            <div class="col-lg-4">
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <i class="fa fa-area-chart fa-fw"></i> Thống kê doanh laptop
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div id="CateChart_Laptop">
+                        </div>
+                        <!-- /.list-group -->
+                    </div>
+                    <div class="panel-heading">
+                        <i class="fa fa-area-chart fa-fw"></i> Thống kê doanh thu điện thoại
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div id="CateChart_Phone">
+                        </div>
+                        <!-- /.list-group -->
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <i class="fa fa-bell fa-fw"></i> Báo cáo hàng ngày
+                    </div>
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <div class="list-group">
+                            <a href="#" class="list-group-item">
+                                <i class="fa fa-comment fa-fw"></i> Đánh giá sản phẩm mới
+                                <span class="pull-right text-muted small">
+                                    <em>@ViewBag.Review_today đánh giá</em>
+                                </span>
+                            </a>
+                            <a href="#" class="list-group-item">
+                                <i class="fa fa-address-book-o fa-fw"></i> Đơn đặt hôm nay
+                                <span class="pull-right text-muted small">
+                                    <em>@ViewBag.Order_today đơn hàng</em>
+                                </span>
+                            </a>
+                            <a href="#" class="list-group-item">
+                                <i class="fa fa-address-book-o fa-fw"></i> Tổng đơn hàng
+                                <span class="pull-right text-muted small">
+                                    <em>@ViewBag.Count_Order đơn hàng</em>
+                                </span>
+                            </a>
+                            <a href="#" class="list-group-item">
+                                <i class="fa fa-table fa-fw"></i> Đơn hàng đã thanh toán
+                                <span class="pull-right text-muted small">
+                                    <em>@ViewBag.Order_Payment đơn hàng</em>
+                                </span>
+                            </a>
+                            <a href="#" class="list-group-item">
+                                <i class="fa fa-inbox fa-fw"></i> Đơn hàng đang giao
+                                <span class="pull-right text-muted small">
+                                    <em>@ViewBag.Ordering đơn hàng</em>
+                                </span>
+                            </a>
+                            <a href="#" class="list-group-item">
+                                <i class="fa fa-close fa-fw"></i> Đơn hàng đã hủy
+                                <span class="pull-right text-muted small">
+                                    <em>@ViewBag.Order_Cancer đơn hàng</em>
+                                </span>
+                            </a>
+                            <a href="#" class="list-group-item">
+                                <i class="fa fa-ban fa-fw"></i> Đơn hàng đã từ chối
+                                <span class="pull-right text-muted small">
+                                    <em>@ViewBag.Order_refuse đơn hàng</em>
+                                </span>
+                            </a>
+                        </div>
+                        <!-- /.list-group -->
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+            </div>
+            <!-- /.col-lg-4 -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</div>
+
+@section jsAdmin{
+
+    <script type="text/javascript">
+        $(function () {
+
+            $("#btnExport").click(function () {
+                var order_id = $(this).data('id');
+                var url = "/Admin/Home/PrintBill";
+                window.open(url, "_blank");
+                //window.location.href = url;
+            });
+
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.ajax({
+                type: 'GET',
+                url: '/Admin/Home/TotalSaleMonth',
+                data: {},
+                contentType: "application/json;charset=utf-8",
+                dataType: 'json',
+                success: function (res) {
+                    successFunc(res);
+                    console.log(res);
+                },
+                error: function (errormessage) {
+                    alert("error");
+                    console.log(errormessage.responseText);
+                }
+            });
+
+            $.ajax({
+                type: 'GET',
+                url: '/Admin/Home/CateSale_Laptop',
+                data: {},
+                contentType: "application/json;charset=utf-8",
+                dataType: 'json',
+                success: function (res) {
+                    getCategory_Laptop(res);
+                    // console.log(res);
+                },
+                error: function (errormessage) {
+                    alert("error");
+                    console.log(errormessage.responseText);
+                }
+            });
+
+            $.ajax({
+                type: 'GET',
+                url: '/Admin/Home/CateSale_Phone',
+                data: {},
+                contentType: "application/json;charset=utf-8",
+                dataType: 'json',
+                success: function (res) {
+                    getCategory_Phone(res);
+                    // console.log(res);
+                },
+                error: function (errormessage) {
+                    alert("error");
+                    console.log(errormessage.responseText);
+                }
+            });
+        });
+
+        function formatNumber(num) {
+            return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")
+        }
+
+        function successFunc(jsondata) {
+
+            var month = ['x'];
+            var Total = ['total'];
+
+            jsondata.forEach(function (e) {
+                //e.total = formatNumber(e.total);
+                Total.push(e.tong);
+                month.push("Tháng " + e.thang);
+            })
+            console.log(month);
+            console.log(Total);
+
+            var chart = c3.generate({
+                bindto: '#SaleChart',
+                data: {
+                    x: 'x',
+                    columns: [
+                        month,
+                        Total
+                    ],
+                    type: 'bar',
+                },
+                axis: {
+                    x: {
+                        type: 'category', // this needed to load string x value
+                        label: {
+                            position: 'outer-center'
+                        }
+
+                    },
+                    y: {
+                        tick: {
+                            format: d3.format(",")
+                        }
+                    }
+                },
+                color: {
+                    Total: '#ff0000'
+                },
+                labels: true
+            });
+
+            chart.data.names(
+                {
+                    total: 'Biểu đồ doanh thu theo từng tháng bán hàng (VNĐ)'
+                });
+        }
+
+        function getCategory_Laptop(jsondata) {
+
+            var category = [];
+
+            // console.log(jsondata.lstCate);
+            $.each(jsondata, function (i, item) {
+                // console.log(item.Name);
+                // console.log(item.View);
+                category[i] = new Array(item.CategoryName, item.tong);
+                // view.push(item.View);
+            });
+
+            console.log(category);
+
+            var chart = c3.generate({
+                bindto: '#CateChart_Laptop',
+                data: {
+                    columns: category,
+                    type: 'pie',
+                }
+            });
+        }
+
+        function getCategory_Phone(jsondata) {
+
+            var category = [];
+
+            // console.log(jsondata.lstCate);
+            $.each(jsondata, function (i, item) {
+                // console.log(item.Name);
+                // console.log(item.View);
+                category[i] = new Array(item.CategoryName, item.tong);
+                // view.push(item.View);
+            });
+
+            console.log(category);
+
+            var chart = c3.generate({
+                bindto: '#CateChart_Phone',
+                data: {
+                    columns: category,
+                    type: 'pie',
+                }
+            });
+        }
+    </script>
+}

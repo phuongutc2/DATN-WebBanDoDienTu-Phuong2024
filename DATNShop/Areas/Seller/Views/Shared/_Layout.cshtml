@@ -1,0 +1,205 @@
+﻿@{ 
+    var seller = Session["seller_login"] as ShoppingOnline.Models.Entities.User;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>@ViewBag.Title | Seller</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="~/Areas/Admin/Assets/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="~/Areas/Admin/Assets/css/metisMenu.min.css" rel="stylesheet">
+
+    <link href="~/Areas/Admin/Assets/css/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+    <link href="~/Areas/Admin/Assets/css/dataTables/dataTables.responsive.css" rel="stylesheet" />
+    <link href="~/Areas/Admin/Assets/c3/c3.css" rel="stylesheet" />
+    <!-- Timeline CSS -->
+    <link href="~/Areas/Admin/Assets/css/timeline.css" rel="stylesheet">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link href="~/Areas/Admin/Assets/select2/select2.min.css" rel="stylesheet" />
+    <!--notify-->
+    @*<link href="~/Assets/css/PNotifyBrightTheme.css" rel="stylesheet" />*@
+    <script src="~/Areas/Admin/Assets/js/PNotify.js"></script>
+    <script src="~/Areas/Admin/Assets/js/PNotifyBootstrap3.js"></script>
+    <script src="~/Areas/Admin/Assets/js/PNotifyConfirm.js"></script>
+    <link href="~/Areas/Admin/Assets/css/BrightTheme.css" rel="stylesheet" />
+    <link href="~/Areas/Admin/Assets/css/PNotify.css" rel="stylesheet" />
+    <link href="~/Areas/Admin/Assets/css/PNotifyBootstrap3.css" rel="stylesheet" />
+    <link href="~/Areas/Admin/Assets/css/PNotifyConfirm.css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link href="~/Areas/Admin/Assets/css/startmin.css" rel="stylesheet">
+
+    <!-- Morris Charts CSS -->
+    <link href="~/Areas/Admin/Assets/css/morris.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="~/Areas/Admin/Assets/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+    @if (seller == null)
+    {
+        Response.Redirect("~/dang-nhap");
+    }
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/Seller/Home">Trang quản lý bán hàng - @seller.Fullname</a>
+            </div>
+
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <ul class="nav navbar-nav navbar-left navbar-top-links">
+                <li><a href="/Seller/Home"><i class="fa fa-home fa-fw"></i>Seller</a></li>
+            </ul>
+
+            <ul class="nav navbar-right navbar-top-links">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i> @seller.Fullname <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li>
+                            <a href="/Seller/User/Update"><i class="fa fa-info fa-fw"></i>Cập nhật thông tin</a>
+                        </li>
+                        <li>
+                            <a href="/Seller/User/changPass"><i class="fa fa-refresh fa-fw"></i>Đổi mật khẩu</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="/Seller/User/Logout"><i class="fa fa-sign-out fa-fw"></i>Đăng xuất</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- /.navbar-top-links -->
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li class="sidebar-search">
+                            <div class="input-group custom-search-form">
+                                <input type="text" class="form-control" placeholder="Search...">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary" type="button">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                            <!-- /input-group -->
+                        </li>
+                        <li>
+                            <a href="/Seller/Home"><i class="fa fa-dashboard fa-fw"></i>Thống kê bán hàng</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-table fa-fw"></i> Quản lý sản phẩm<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="/Seller/Product/Index">Danh sách laptop</a>
+                                </li>
+                                <li>
+                                    <a href="/Seller/Product/Phone">Danh sách điện thoại</a>
+                                </li>
+                                <li>
+                                    <a href="/Seller/Product/Add">Thêm mới sản phẩm</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-inbox fa-fw"></i>Quản lý kho<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="/Seller/Inward/Index">Nhật ký nhập kho</a>
+                                </li>
+                                <li>
+                                    <a href="/Seller/Inward/Add">Nhập kho</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="/Seller/User/Index"><i class="fa fa-user fa-fw"></i>Chăm sóc khách hàng</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-address-book-o fa-fw"></i> Quản lý đơn hàng<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="/Seller/Order/Index">Đơn hàng mới</a>
+                                </li>
+                                <li>
+                                    <a href="/Seller/Order/Delivery">Đơn hàng đang vận chuyển</a>
+                                </li>
+                                <li>
+                                    <a href="/Seller/Order/Payment">Đơn hàng đã thanh toán</a>
+                                </li>
+                                <li>
+                                    <a href="/Seller/Order/Cancer">Đơn hàng đã hủy / từ chối</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        @RenderBody()
+
+    </div>
+    <!-- /#wrapper -->
+    <!-- jQuery -->
+    <script src="~/Areas/Admin/Assets/js/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="~/Areas/Admin/Assets/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="~/Areas/Admin/Assets/js/metisMenu.min.js"></script>
+
+    <!-- Morris Charts JavaScript -->
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    @*<script src="~/Scripts/jquery-ui.js"></script>*@
+    <script src="~/Areas/Admin/Assets/js/raphael.min.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Assets/ckeditor/ckeditor.js"></script>
+
+    <script src="~/Areas/Admin/Assets/js/dataTables/jquery.dataTables.min.js"></script>
+    <script src="~/Areas/Admin/Assets/js/dataTables/dataTables.bootstrap.min.js"></script>
+
+    <script src="~/Areas/Admin/Assets/c3/c3.js"></script>
+    <script src="https://c3js.org/js/d3-5.8.2.min-c5268e33.js"></script>
+    <script src="~/Areas/Admin/Assets/select2/select2.full.min.js"></script>
+    <!--notify-->
+    @*<script src="~/Assets/notify/notify.js"></script>
+        <script src="~/Assets/notify/PNotify.js"></script>*@
+
+    @*<script src="~/Areas/Admin/Assets/js/morris.min.js"></script>*@
+    @*<script src="~/Areas/Admin/Assets/js/morris-data.js"></script>*@
+
+    <!-- Custom Theme JavaScript -->
+    <script src="~/Areas/Admin/Assets/js/startmin.js"></script>
+    @RenderSection("jsSeller", required: false)
+</body>
+</html>
